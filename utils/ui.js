@@ -37,4 +37,12 @@ function takeLoginIntent() {
   return v;
 }
 
-module.exports = { toast, loginGuard, takeLoginIntent };
+/* tab 页弹抽屉时隐藏自定义 tabbar：tabbar 是框架渲染的独立层，
+   页面内 fixed 元素 z-index 压不过它，不隐藏会遮挡抽屉底部 */
+function toggleTabBar(page, hidden) {
+  if (typeof page.getTabBar === 'function' && page.getTabBar()) {
+    page.getTabBar().setHidden(hidden);
+  }
+}
+
+module.exports = { toast, loginGuard, takeLoginIntent, toggleTabBar };

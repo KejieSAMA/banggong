@@ -55,20 +55,24 @@ Page({
     else if (act === 'nav-history') wx.navigateTo({ url: '/pages/history/history' });
     else if (act === 'toast-coupon') ui.toast(this, '优惠券功能仅作展示');
     else if (act === 'toast-todo') ui.toast(this, '功能开发中，敬请期待');
-    else if (act === 'open-service') this.setData({ serviceVisible: true });
+    else if (act === 'open-service') { ui.toggleTabBar(this, true); this.setData({ serviceVisible: true }); }
     else if (act === 'toast-feedback') ui.toast(this, '感谢你的反馈！');
     else if (act === 'open-settings') wx.navigateTo({ url: '/pages/settings/settings' });
   },
 
   /* —— 微信登录 / 资料编辑（头像 chooseAvatar + 昵称 nickname 输入框，微信合规组件） —— */
   openProfile() {
+    ui.toggleTabBar(this, true);
     this.setData({
       profileVisible: true,
       draftName: this.data.loginName,
       draftAvatar: this.data.avatar,
     });
   },
-  onProfileClose() { this.setData({ profileVisible: false }); },
+  onProfileClose() {
+    ui.toggleTabBar(this, false);
+    this.setData({ profileVisible: false });
+  },
   onNameInput(e) { this.setData({ draftName: e.detail.value }); },
 
   onChooseAvatar(e) {
@@ -123,14 +127,19 @@ Page({
     }
     const wasLogin = !!this.data.loginName;
     store.setProfile(name, this.data.draftAvatar);
+    ui.toggleTabBar(this, false);
     this.setData({ profileVisible: false });
     ui.toast(this, wasLogin ? '资料已保存' : '登录成功，欢迎回来', 'check_circle-fill');
   },
 
   /* 客服 sheet */
-  onServiceClose() { this.setData({ serviceVisible: false }); },
+  onServiceClose() {
+    ui.toggleTabBar(this, false);
+    this.setData({ serviceVisible: false });
+  },
   onService(e) {
     const type = e.currentTarget.dataset.svc;
+    ui.toggleTabBar(this, false);
     this.setData({ serviceVisible: false });
     if (type === '电话') ui.toast(this, '客服热线：400-800-1234');
     else ui.toast(this, '原型演示：在线客服未接入');

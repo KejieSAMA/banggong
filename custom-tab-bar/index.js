@@ -10,10 +10,14 @@ const TAB_LIST = [
 
 Component({
   options: { styleIsolation: 'apply-shared' },
-  data: { selected: 0, theme: 'light', list: TAB_LIST },
+  data: { selected: 0, theme: 'light', hidden: false, list: TAB_LIST },
   methods: {
     init(selected) {
       this.setData({ selected, theme: theme.current() });
+    },
+    /* tab 页弹出抽屉时隐藏 tabbar（框架的 tabbar 层级高于页面内元素，会遮挡抽屉底部） */
+    setHidden(v) {
+      if (this.data.hidden !== v) this.setData({ hidden: v });
     },
     onTap(e) {
       const index = e.currentTarget.dataset.index;

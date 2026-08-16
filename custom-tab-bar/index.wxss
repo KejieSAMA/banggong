@@ -8,7 +8,10 @@
   display: flex;
   background: var(--surface-container);
   border-top: 2rpx solid var(--outline-variant);
+  transition: transform var(--dur-m) var(--ease-emph), opacity var(--dur-m);
 }
+/* 抽屉弹出时隐藏（滑出 + 不可点） */
+.tabbar.hide { transform: translateY(110%); opacity: 0; pointer-events: none; }
 .tab-btn {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 4rpx;

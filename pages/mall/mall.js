@@ -92,6 +92,7 @@ Page({
 
   /* 排序 */
   openSort() {
+    ui.toggleTabBar(this, true);
     const cur = store.get('sort');
     this.setData({
       sortVisible: true,
@@ -100,29 +101,39 @@ Page({
       })),
     });
   },
-  onSortClose() { this.setData({ sortVisible: false }); },
+  onSortClose() {
+    ui.toggleTabBar(this, false);
+    this.setData({ sortVisible: false });
+  },
   onSortPick(e) {
     const key = e.currentTarget.dataset.key;
     store.set('sort', key);
     this.render();
+    ui.toggleTabBar(this, false);
     this.setData({ sortVisible: false });
     ui.toast(this, '已按“' + SORT_LABELS[key] + '”排序');
   },
 
   /* 筛选 */
   openFilter() {
+    ui.toggleTabBar(this, true);
     this.setData({ filterVisible: true, shipOn: store.get('freeShipOnly') });
   },
-  onFilterClose() { this.setData({ filterVisible: false }); },
+  onFilterClose() {
+    ui.toggleTabBar(this, false);
+    this.setData({ filterVisible: false });
+  },
   onShipToggle() { this.setData({ shipOn: !this.data.shipOn }); },
   onFilterReset() {
     store.set('freeShipOnly', false);
     this.render();
+    ui.toggleTabBar(this, false);
     this.setData({ filterVisible: false });
   },
   onFilterOk() {
     store.set('freeShipOnly', this.data.shipOn);
     this.render();
+    ui.toggleTabBar(this, false);
     this.setData({ filterVisible: false });
     ui.toast(this, this.data.shipOn ? '已筛选包邮商品' : '已显示全部商品');
   },

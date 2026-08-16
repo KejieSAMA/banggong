@@ -1,4 +1,4 @@
-<view class="tabbar {{theme}}">
+<view class="tabbar {{theme}} {{hidden ? 'hide' : ''}}">
   <view
     wx:for="{{list}}"
     wx:key="id"
