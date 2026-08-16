@@ -68,7 +68,6 @@ function cloudPull() {
     cloud = true;
     ['login', 'fav', 'history', 'search'].forEach(emit);
     // 合并结果回推云端，保证多端一致
-    pushFavorites();
     push(() => api.saveFavorites(state.favorites), 'favorites-merge');
     state.history.forEach(id => push(() => api.pushHistory(id), 'history-merge'));
     state.searchHistory.forEach(q => push(() => api.pushSearch(q), 'search-merge'));
