@@ -1,0 +1,23 @@
+<view class="prod-card" style="animation-delay:{{delay}}ms" hover-class="hv-sink" hover-stay-time="80">
+  <view class="thumb">
+    <view wx:if="{{imgError}}" class="thumb-fallback"><icon name="broken_image" size="56" /></view>
+    <image wx:else src="{{product.img}}" mode="aspectFill" lazy-load binderror="onImgError" />
+    <view wx:if="{{product.tag === 'hot'}}" class="tag tag-hot pos-tl">热卖</view>
+    <view wx:elif="{{product.tag === 'new'}}" class="tag tag-new pos-tl">新品</view>
+  </view>
+  <view class="prod-info">
+    <view class="prod-name">{{product.name}}</view>
+    <view class="prod-meta">
+      <view class="price"><text class="num">{{priceText}}</text></view>
+      <text wx:if="{{product.orig}}" class="orig">¥{{product.orig}}</text>
+    </view>
+    <view class="prod-meta meta2">
+      <view class="rate"><icon name="star-fill" size="28" />{{product.rating}}</view>
+      <text class="sold">{{soldText}}</text>
+    </view>
+  </view>
+  <view class="fav-btn {{fav ? 'on' : ''}}" catchtap="onFav">
+    <icon wx:if="{{fav}}" name="favorite-fill" size="36" />
+    <icon wx:else name="favorite" size="36" />
+  </view>
+</view>

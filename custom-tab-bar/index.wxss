@@ -1,0 +1,30 @@
+/* 自定义 tabBar：固定底部，高度 50px(100rpx) + 安全区（微信官方模板标准）
+   box-sizing: border-box —— 安全区 padding 计入高度，避免 content-box 下重复叠加 */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 999;
+  box-sizing: border-box;
+  height: calc(100rpx + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  background: var(--surface-container);
+  border-top: 2rpx solid var(--outline-variant);
+}
+.tab-btn {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4rpx;
+  color: var(--on-surface-variant); position: relative;
+}
+/* M3 胶囊指示器：仅激活项显示，spring 过渡 */
+.tab-ind {
+  width: 100rpx; height: 52rpx; border-radius: 26rpx;
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  color: inherit;
+  transition: background var(--dur-m), transform var(--dur-m) var(--ease-spring);
+}
+.tab-btn.active .tab-ind {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+.tab-btn.active { color: var(--on-secondary-container); }
+.tab-lb { font-size: 20rpx; font-weight: 500; line-height: 1; }

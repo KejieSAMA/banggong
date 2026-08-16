@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "分类浏览",
+  "usingComponents": {
+    "icon": "../../components/icon/icon",
+    "toast": "../../components/toast/toast"
+  }
+}

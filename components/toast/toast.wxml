@@ -1,0 +1,4 @@
+<view wx:if="{{rendered}}" class="toast {{out ? 'out' : ''}}">
+  <icon wx:if="{{icon}}" name="{{icon}}" size="36" />
+  <text>{{message}}</text>
+</view>

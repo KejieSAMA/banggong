@@ -1,0 +1,38 @@
+.prod-card {
+  position: relative; overflow: hidden;
+  background: var(--surface-container-lowest);
+  border-radius: var(--shape-lg);
+  box-shadow: 0 0 0 2rpx var(--outline-variant);
+  display: flex; flex-direction: column; text-align: left;
+  animation: staggerIn .34s var(--ease-emph) both;
+}
+.thumb {
+  position: relative; width: 100%; padding-bottom: 100%;
+  overflow: hidden; background: var(--surface-container);
+}
+.thumb image {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+}
+.pos-tl { position: absolute; left: 16rpx; top: 16rpx; z-index: 2; }
+.prod-info { padding: 18rpx 20rpx 22rpx; display: flex; flex-direction: column; gap: 10rpx; }
+.prod-name {
+  font-size: 26rpx; line-height: 1.45; color: var(--on-surface); font-weight: 500;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; min-height: 76rpx;
+}
+.prod-meta { display: flex; align-items: baseline; gap: 12rpx; }
+.meta2 { gap: 8rpx; }
+.rate {
+  display: inline-flex; align-items: center; gap: 4rpx;
+  color: var(--on-surface-variant); font-size: 22rpx;
+}
+.sold { font-size: 22rpx; color: var(--on-surface-variant); }
+.fav-btn {
+  position: absolute; right: 12rpx; bottom: 12rpx;
+  width: 60rpx; height: 60rpx; border-radius: 50%;
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-variant); box-shadow: var(--elev-1); z-index: 2;
+}
+.fav-btn.on { color: var(--price); }
+.fav-btn.on icon { animation: heartPop .38s var(--ease-spring); }

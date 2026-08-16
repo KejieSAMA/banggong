@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "商品详情",
+  "usingComponents": {
+    "icon": "../../components/icon/icon",
+    "product-card": "../../components/product-card/product-card",
+    "empty-state": "../../components/empty-state/empty-state",
+    "sheet": "../../components/sheet/sheet",
+    "toast": "../../components/toast/toast"
+  }
+}

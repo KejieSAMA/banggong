@@ -1,0 +1,38 @@
+<view class="page page-fill {{theme}}">
+  <view class="cat-layout">
+    <scroll-view class="cat-rail" scroll-y enhanced show-scrollbar="{{false}}">
+      <view
+        wx:for="{{subs}}"
+        wx:key="*this"
+        class="rail-item {{activeSub === item ? 'active' : ''}}"
+        data-sub="{{item}}"
+        bindtap="onSub"
+      >{{item}}</view>
+    </scroll-view>
+    <scroll-view class="cat-panel" scroll-y enhanced show-scrollbar="{{false}}">
+      <view class="cat-sub-hd">
+        <text>{{subName}}</text>
+        <text>{{subCount}}</text>
+      </view>
+      <view class="cat-grid">
+        <view
+          wx:for="{{list}}"
+          wx:key="id"
+          class="cat-box"
+          style="animation-delay:{{item.delay}}ms"
+          hover-class="hv-sink"
+          hover-stay-time="80"
+          data-id="{{item.id}}"
+          bindtap="onOpen"
+        >
+          <view class="cimg"><image src="{{item.img}}" mode="aspectFill" lazy-load /></view>
+          <view class="ctxt">
+            <view class="nm">{{item.name}}</view>
+            <view class="pr">¥{{item.priceText}}</view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  <toast id="toast" />
+</view>

@@ -1,0 +1,57 @@
+/* 搜索页（对应 demo §10；标题由原生导航栏承载） */
+.srch-bar {
+  flex-shrink: 0; display: flex; align-items: center; gap: 16rpx;
+  padding: 16rpx 24rpx 16rpx;
+}
+.srch-input {
+  flex: 1; display: flex; align-items: center; gap: 16rpx;
+  height: 72rpx; padding: 0 24rpx; border-radius: 9999rpx;
+  background: var(--surface-container); color: var(--on-surface-variant);
+}
+.s-in { flex: 1; font-size: 28rpx; color: var(--on-surface); height: 100%; }
+.s-ph { color: var(--on-surface-variant); opacity: .8; }
+.srch-cancel {
+  font-size: 28rpx; color: var(--on-surface-variant);
+  padding: 12rpx 8rpx; flex-shrink: 0;
+}
+.srch-clr {
+  display: flex; align-items: center; justify-content: center;
+  width: 40rpx; height: 40rpx; border-radius: 50%;
+  background: var(--surface-container-highest); color: var(--on-surface-variant);
+}
+
+.srch-sect-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 40rpx 36rpx 24rpx;
+}
+.srch-sect-hd .h4 { font-size: 30rpx; font-weight: 700; }
+.clear-his {
+  display: flex; align-items: center; gap: 6rpx;
+  font-size: 25rpx; color: var(--on-surface-variant); padding: 8rpx 16rpx; border-radius: 16rpx;
+}
+.srch-chips { display: flex; flex-wrap: wrap; gap: 18rpx; padding: 0 36rpx; }
+.srch-chips.pad-top { padding-top: 8rpx; }
+.srch-chip {
+  height: 60rpx; line-height: 60rpx; padding: 0 28rpx; border-radius: 30rpx;
+  background: var(--surface-container); color: var(--on-surface-variant);
+  font-size: 26rpx;
+}
+.hv-chip { background: var(--surface-container-high); }
+
+.hot-rank { padding: 4rpx 36rpx; }
+.hot-it {
+  display: flex; align-items: center; gap: 24rpx;
+  padding: 18rpx 0; text-align: left;
+}
+.hot-it .rk {
+  width: 38rpx; height: 38rpx; border-radius: 10rpx;
+  font-size: 24rpx; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-container); color: var(--on-surface-variant); flex-shrink: 0;
+}
+.hot-it .rk.top { background: var(--primary); color: var(--on-primary); }
+.hot-it .kw { font-size: 28rpx; color: var(--on-surface); }
+.hot-tag { margin-left: auto; font-size: 20rpx; color: var(--price); font-weight: 700; }
+
+.srch-count { font-size: 24rpx; color: var(--on-surface-variant); padding: 24rpx 36rpx 8rpx; }
+.prod-meta.mt { margin-top: 10rpx; gap: 12rpx; display: flex; align-items: baseline; }

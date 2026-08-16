@@ -1,0 +1,29 @@
+<view class="page {{theme}}">
+  <view class="page-body">
+    <block wx:if="{{list.length}}">
+      <view class="list-bar"><text>{{countText}}</text></view>
+      <view
+        wx:for="{{list}}"
+        wx:key="id"
+        class="list-row"
+        style="animation-delay:{{item.delay}}ms"
+        hover-class="hv-cell"
+        hover-stay-time="80"
+        data-id="{{item.id}}"
+        bindtap="onOpen"
+      >
+        <view class="thumb"><image src="{{item.img}}" mode="aspectFill" lazy-load /></view>
+        <view class="info">
+          <view class="prod-name">{{item.name}}</view>
+          <text class="sold">{{item.brandLine}}</text>
+          <view class="meta-row"><view class="price"><text class="num">{{item.priceText}}</text></view></view>
+        </view>
+        <view class="fav-btn on" catchtap="onRemove" data-id="{{item.id}}">
+          <icon name="favorite-fill" size="40" />
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="heart_broken" text="还没有收藏的商品" btnText="去逛逛" bind:action="onGoMall" />
+  </view>
+  <toast id="toast" />
+</view>

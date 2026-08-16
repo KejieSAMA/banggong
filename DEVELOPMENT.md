@@ -1,0 +1,100 @@
+# 办公严选小程序 · 开发规范
+
+> 本项目由 H5 原型（`../index.html`）高保真移植，视觉规范以原型为准。
+> 原生 WXML/WXSS/JS 开发，无第三方 UI 库与运行时依赖。
+
+## 1. 目录与职责
+
+```
+miniprogram/
+├── app.json / app.js / app.wxss   # 路由、入口、全局令牌与通用样式
+├── project.config.json            # appid 唯一出现位置（业务代码禁止引用 appid）
+├── config/env.js                  # 后端 BASE_URL 唯一入口（前后端分离）
+├── data/db.js                     # 内置演示数据（无后端兜底）
+├── utils/                         # 纯逻辑层：api / store / theme / format / ui
+├── components/                    # 通用组件（四件套齐全，json 声明 component:true）
+├── custom-tab-bar/                # 自定义底部导航（微信约定目录名，不可改名）
+├── images/                        # 本地图片（小写命名；>50KB 后续迁 CDN，由 api 层换 URL）
+└── pages/<模块>/                   # 每页四件套：js / json / wxml / wxss
+```
+
+- 页面 js 只做「取数 → setData → 动作分发」；可复用逻辑一律下沉 `utils/`
+- 禁止页面之间互相 `require`；页面间传参 URL query 只传 id
+- `tools/` 为开发期脚本（如图标生成），已通过 `packOptions.ignore` 排除出包
+
+## 2. 通用组件契约（props 单向流入 / events 向上抛出）
+
+| 组件 | 属性 | 事件 | 约束 |
+|---|---|---|---|
+| `icon` | name / size(rpx) / color(可传 `var(--x)`) | — | SVG→mask 类（`masks.wxss`，脚本生成勿手改）；颜色随 `currentColor` 继承。注意：data URI 内单引号必须编码为 `%27`，否则 `url('')` 被截断、mask 失效渲染成色块 |
+| `product-card` | product / fav / delay(ms) | `bind:fav` | 不直接改 store，收藏状态由父级传入并同步 |
+| `empty-state` | icon / text / btnText | `bind:action` | 纯展示 |
+| `sheet` | visible / title（slot 内容） | `bind:close` | 内部管理入场/退场动画与把手拖拽关闭 |
+| `dialog` | visible / title / content / avatar / actions[] | `bind:close` `bind:action` | actions 支持 `{label, cls, icon, loading}` |
+| `toast` | —（由 `ui.toast(page, msg, icon)` 调用） | — | 每页 wxml 挂 `<toast id="toast"/>` |
+
+- 组件一律声明 `options: { styleIsolation: 'apply-shared' }` 以复用全局通用样式
+- **slot 内容属于页面作用域**：sheet 插槽用的 `.sheet-row` 等样式必须放 `app.wxss`（已如此）
+- 组件内禁止 `wx.request` / 直接读写 store / 页面导航；数据与状态变更只在页面层
+
+## 3. 命名规范
+
+- 目录 / 文件 / 组件：小写 kebab-case（`product-card`、`custom-tab-bar`）
+- CSS 类名：与 H5 原型保持一致（`prod-card`、`chips-row`…）便于逐块对照；新增类同样 kebab-case
+- JS：变量/函数 camelCase；常量 UPPER_SNAKE_CASE；私有成员 `_` 前缀
+- 事件分发：WXML 统一 `data-act` / `data-id` + 页面单一 `handleAct`（延续原型 ACTIONS 动作表）
+
+## 4. JS 代码规范
+
+- ES6+（const/let、箭头函数、模板字符串、解构）；开启 ES6 转 ES5 + 增强编译
+- `setData` 最小粒度更新（`this.setData({ 'list[3].fav': true })` 优先），避免整列表重推
+- store 读写一律走 `store.get/set/具名方法`，禁止直接改内部对象；持久化字段白名单见 `store.js`
+- 事件总线 `store.on/off` 必须成对注册，`onUnload` 解绑（tab 页常驻也保持同一写法）
+- API 契约：统一 `{ code, data, msg }`，`code === 0` 成功；10s 超时；失败静默回落 `data/db.js` 并 `console.warn`
+- wx.* 回调都带 `fail` 兜底（至少空函数），避免未捕获异常
+
+## 5. WXML / WXSS 规范
+
+- `wx:for` 必带 `wx:key`；绑定表达式不超过一层计算，复杂逻辑放 js 预计算
+- **颜色 / 圆角 / 阴影 / 动效参数只允许引用 CSS 变量**（`var(--primary)` 等），禁止写死色值——保证明暗主题一致；已知例外：搜索高亮（rich-text 内联样式，按主题取字面值，集中在 `search.js` 顶部）
+- 尺寸换算：原型 1px → 2rpx（390 设计稿），**全项目 wxss 不使用 px 单位**（例外：cat-box 描边 1rpx ≈ 0.5px hairline）；JS 中触摸坐标（如 sheet 拖拽）为物理 px，不属于样式
+- **全局 `box-sizing: border-box`**（app.wxss 元素选择器实现，对应原型 `*{box-sizing}` 重置）：缺失时 `width:100%` 与 padding 叠加会导致 chip 叠压 / 列表溢出屏幕
+- 动态值（animation-delay、拖拽位移）用 style 内联，其余进 class；禁止内联写颜色
+- view 无 `:active`：统一 `hover-class`（`hv-sink` 按压缩放 / `hv-cell` 按压底色）
+- 布局优先 flex；grid 仅用于等宽网格（chips 4 列、双列商品墙、宫格）
+
+## 6. 主题与安全区
+
+- 每页根节点 `class="page {{theme}}"`，`onShow` 时 `theme.syncNav()` 同步原生导航栏颜色并回填 `data.theme`
+- 暗色切换走 `theme.toggle()`；各页通过 `store.on('theme')` 监听刷新
+- 底部固定元素（custom-tab-bar、详情 dtl-bar、sheet/toast）统一 `padding-bottom: env(safe-area-inset-bottom)`
+- custom-tab-bar 高度 `calc(100rpx + env(...))`（50px 官方标准）且必须 `box-sizing: border-box`——WXSS 默认 content-box 会把安全区算两次导致 bar 过高
+- tab 页内容预留 tabbar 高度：根内容加 `.tab-pad`（与 tabbar 高度同步维护）
+
+## 7. 导航约定
+
+- tab 页（home/mall/me）：原生导航栏 + 自定义 tabBar；`onShow` 里 `this.getTabBar().init(index)`
+- 二级页：一律 `wx.navigateTo`（自带原生返回键与转场；非 tab 页不渲染 custom-tab-bar，即自动隐藏底部导航）
+- 返回：`wx.navigateBack`；兜底 `fail` 时 `switchTab` 回首页（防止直达页无栈可退）
+
+## 8. 数据与图片
+
+- `config/env.js` 三模式：`BASE_URL` 非空直连；否则 `CLOUD.env` 非空走 `wx.cloud.callContainer`（云托管免鉴权，推荐）；均失败回落本地数据
+- 接口：`GET /api/banners | /api/categories | /api/products | /api/products/:id | /api/hot-keywords`（后端仓库：banggong-koa）
+- 本地图片路径 `/images/xx.jpg` 由 api 层拼装；后端应返回完整 URL —— 页面不感知来源
+
+## 9. 工程杂项
+
+- 提交信息约定式：`feat:` / `fix:` / `style:` / `refactor:` / `chore:`
+- `.gitignore` 排除 `node_modules/`、日志与私钥文件
+- 改图标：编辑原型 SVG 雪碧图后重跑 `node tools/gen-icons.js <原型index.html路径>`（工作区默认布局可省略路径）
+- 原型对照：视觉问题先查 `../index.html` 对应区块（各 wxss 注释均标注了原型章节号）
+
+## 10. 已知与原型的差异（有意为之）
+
+| 差异 | 原因 |
+|---|---|
+| 首页无页内 logo 标题行 | 原生导航栏已展示「办公严选」，避免重复 |
+| tabBar 仅激活项显示胶囊指示器 | 原型三个 tab 胶囊常亮无激活反馈（原型瑕疵），按 M3 规范修正 |
+| 顶栏/状态栏/胶囊为微信原生 | 平台组件，不自绘 |
+| 分享「微信好友」走真实转发 | 原生能力顺手接入；其余分享项保持演示 toast |

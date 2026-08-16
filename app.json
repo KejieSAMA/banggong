@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/mall/mall",
+    "pages/me/me",
+    "pages/product/product",
+    "pages/category/category",
+    "pages/search/search",
+    "pages/favorites/favorites",
+    "pages/history/history",
+    "pages/settings/settings"
+  ],
+  "window": {
+    "navigationStyle": "default",
+    "navigationBarBackgroundColor": "#FBF8FF",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "办公严选",
+    "backgroundColor": "#FBF8FF",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#45464F",
+    "selectedColor": "#161B2C",
+    "backgroundColor": "#EFEDF4",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/home/home", "text": "首页" },
+      { "pagePath": "pages/mall/mall", "text": "商城" },
+      { "pagePath": "pages/me/me", "text": "我的" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

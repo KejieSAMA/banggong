@@ -1,0 +1,72 @@
+<view class="page {{theme}}">
+  <view class="page-body tab-pad">
+    <view class="chips-wrap">
+      <view class="chips-row">
+        <view class="chip {{activeCat === 'all' ? 'active' : ''}}" hover-class="hv-sink" hover-stay-time="80" data-act="mall-chip" data-id="all" bindtap="handleAct">全部</view>
+        <view
+          wx:for="{{cats}}"
+          wx:key="id"
+          class="chip"
+          hover-class="hv-sink"
+          hover-stay-time="80"
+          data-act="mall-chip"
+          data-id="{{item.id}}"
+          bindtap="handleAct"
+        >{{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="sticky-bar">
+      <view class="sort-btn" hover-class="hv-cell" hover-stay-time="80" data-act="open-sort" bindtap="handleAct">
+        <icon name="swap_vert" size="36" /><text>{{sortLabel}}</text>
+      </view>
+      <view class="filter-btn" hover-class="hv-cell" hover-stay-time="80" data-act="open-filter" bindtap="handleAct">
+        <icon name="tune" size="36" /><text>筛选</text>
+        <view wx:if="{{freeShipOnly}}" class="dot" />
+      </view>
+    </view>
+
+    <view class="mall-count">{{countText}}</view>
+    <view class="grid2">
+      <product-card
+        wx:for="{{list}}"
+        wx:key="id"
+        product="{{item}}"
+        fav="{{item.fav}}"
+        delay="{{item.delay}}"
+        data-act="open-product"
+        data-id="{{item.id}}"
+        bindtap="handleAct"
+        bind:fav="onCardFav"
+      />
+    </view>
+  </view>
+
+  <sheet visible="{{sortVisible}}" title="排序方式" bind:close="onSortClose">
+    <view
+      wx:for="{{sortItems}}"
+      wx:key="key"
+      class="sheet-row {{item.sel ? 'sel' : ''}}"
+      hover-class="hv-cell"
+      hover-stay-time="80"
+      data-key="{{item.key}}"
+      bindtap="onSortPick"
+    >
+      <text class="lab">{{item.label}}</text>
+      <view class="radio" />
+    </view>
+  </sheet>
+
+  <sheet visible="{{filterVisible}}" title="筛选" bind:close="onFilterClose">
+    <view class="sheet-sw-row">
+      <text class="lab">仅看包邮商品</text>
+      <view class="switch {{shipOn ? 'on' : ''}}" bindtap="onShipToggle" />
+    </view>
+    <view class="sheet-btns">
+      <view class="btn btn-text" style="flex:1" hover-class="hv-sink" hover-stay-time="80" bindtap="onFilterReset">重置</view>
+      <view class="btn btn-filled" style="flex:2" hover-class="hv-sink" hover-stay-time="80" bindtap="onFilterOk">确定</view>
+    </view>
+  </sheet>
+
+  <toast id="toast" />
+</view>

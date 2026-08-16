@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "全部商品",
+  "usingComponents": {
+    "icon": "../../components/icon/icon",
+    "product-card": "../../components/product-card/product-card",
+    "sheet": "../../components/sheet/sheet",
+    "toast": "../../components/toast/toast"
+  }
+}

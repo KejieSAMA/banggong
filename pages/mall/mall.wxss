@@ -1,0 +1,28 @@
+/* 商城页（对应 demo §7；标题由原生导航栏承载，搜索入口仅保留在首页） */
+/* 分类 chips：固定 4 列等宽网格（多行） */
+.chips-wrap { background: var(--surface); }
+.chips-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx; padding: 28rpx; background: var(--surface);
+}
+.chips-row .chip { width: 100%; }
+
+/* 吸顶排序/筛选条 */
+.sticky-bar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18rpx 32rpx; background: var(--surface-container);
+  border-radius: 0 0 var(--shape-lg) var(--shape-lg);
+}
+.sort-btn {
+  display: flex; align-items: center; gap: 6rpx;
+  font-size: 27rpx; font-weight: 600; color: var(--on-surface);
+  padding: 8rpx 16rpx; border-radius: 16rpx;
+}
+.filter-btn {
+  display: flex; align-items: center; gap: 8rpx;
+  font-size: 26rpx; color: var(--on-surface-variant);
+  padding: 8rpx 16rpx; border-radius: 16rpx;
+}
+.filter-btn .dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: var(--primary); }
+.mall-count { font-size: 23rpx; color: var(--on-surface-variant); padding: 20rpx 32rpx 4rpx; }

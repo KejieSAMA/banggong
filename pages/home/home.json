@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "办公严选",
+  "usingComponents": {
+    "icon": "../../components/icon/icon",
+    "product-card": "../../components/product-card/product-card",
+    "toast": "../../components/toast/toast"
+  }
+}

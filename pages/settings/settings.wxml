@@ -1,0 +1,97 @@
+<view class="page {{theme}}">
+  <view class="page-body">
+    <view style="height:28rpx" />
+
+    <view class="cell-group">
+      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-todo" bindtap="handleAct">
+        <view class="cell-ic"><icon name="person" size="40" /></view>
+        <text class="cell-tit">账号与安全</text>
+        <icon name="chevron_right" size="40" class="chev" />
+      </view>
+      <view class="cell-div" />
+      <view class="cell set-cell">
+        <view class="cell-ic"><icon name="notifications" size="40" /></view>
+        <text class="cell-tit">消息通知</text>
+        <view class="switch {{notifyOn ? 'on' : ''}}" bindtap="onNotify" />
+      </view>
+      <view class="cell-div" />
+      <view class="cell set-cell">
+        <view class="cell-ic"><icon name="dark_mode" size="40" /></view>
+        <text class="cell-tit">深色模式</text>
+        <view class="switch {{theme === 'dark' ? 'on' : ''}}" bindtap="onToggleTheme" />
+      </view>
+    </view>
+
+    <view class="cell-group">
+      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-lang" bindtap="handleAct">
+        <view class="cell-ic"><icon name="language" size="40" /></view>
+        <text class="cell-tit">语言</text>
+        <view class="cell-val">简体中文<icon name="chevron_right" size="36" /></view>
+      </view>
+      <view class="cell-div" />
+      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="clear-cache" bindtap="handleAct">
+        <view class="cell-ic"><icon name="cleaning_services" size="40" /></view>
+        <text class="cell-tit">清除缓存</text>
+        <view class="cell-val">{{cacheCleared ? '0 KB' : '12.6 MB'}}<icon name="chevron_right" size="36" /></view>
+      </view>
+      <view class="cell-div" />
+      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="about" bindtap="handleAct">
+        <view class="cell-ic"><icon name="info" size="40" /></view>
+        <text class="cell-tit">关于办公严选</text>
+        <view class="cell-val">v1.0.0<icon name="chevron_right" size="36" /></view>
+      </view>
+    </view>
+
+    <view class="cell-group">
+      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-doc" bindtap="handleAct">
+        <text class="cell-tit plain-tit">用户协议</text>
+        <icon name="chevron_right" size="40" class="chev" />
+      </view>
+      <view class="cell-div" style="margin-left:44rpx" />
+      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-doc" bindtap="handleAct">
+        <text class="cell-tit plain-tit">隐私政策</text>
+        <icon name="chevron_right" size="40" class="chev" />
+      </view>
+    </view>
+
+    <view wx:if="{{isLogin}}" class="set-foot">
+      <view class="btn btn-block btn-logout" hover-class="hv-sink" hover-stay-time="80" data-act="logout" bindtap="handleAct">
+        <icon name="logout" size="36" />退出登录
+      </view>
+    </view>
+    <view style="height:60rpx" />
+  </view>
+
+  <dialog
+    visible="{{clearVisible}}"
+    title="清除缓存"
+    content="将清除图片缓存与本地记录，不影响你的收藏"
+    actions="{{clearActions}}"
+    bind:close="onClearClose"
+    bind:action="onClearAction"
+  />
+
+  <dialog
+    visible="{{logoutVisible}}"
+    title="退出登录"
+    content="退出后需要重新授权才能登录"
+    actions="{{logoutActions}}"
+    bind:close="onLogoutClose"
+    bind:action="onLogoutAction"
+  />
+
+  <sheet visible="{{aboutVisible}}" title="关于办公严选" bind:close="onAboutClose">
+    <view class="about-hero">
+      <view class="home-logo-lg"><icon name="shopping_bag" size="56" color="#FFFFFF" /></view>
+      <text class="about-name">办公严选</text>
+      <text class="about-ver">v1.0.0 · 文体办公用品展示小程序</text>
+    </view>
+    <view class="sheet-row" hover-class="hv-cell" hover-stay-time="80" bindtap="onAboutUpdate">
+      <icon name="refresh" size="44" />
+      <view class="lab">检查更新</view>
+      <text class="sub-inline">已是最新版本</text>
+    </view>
+  </sheet>
+
+  <toast id="toast" />
+</view>

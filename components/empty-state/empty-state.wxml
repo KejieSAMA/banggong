@@ -1,0 +1,5 @@
+<view class="empty">
+  <view class="eic"><icon name="{{icon}}" size="116" /></view>
+  <text class="etxt">{{text}}</text>
+  <view wx:if="{{btnText}}" class="btn btn-tonal" hover-class="hv-sink" hover-stay-time="80" catchtap="onAction">{{btnText}}</view>
+</view>

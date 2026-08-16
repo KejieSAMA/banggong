@@ -1,0 +1,2 @@
+/* 收藏页（复用 app.wxss 的 list-row 系列） */
+.meta-row { margin-top: 10rpx; display: flex; align-items: baseline; }

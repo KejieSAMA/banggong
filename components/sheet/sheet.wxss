@@ -1,0 +1,40 @@
+.sheet-wrap { position: fixed; inset: 0; z-index: 1200; }
+.scrim {
+  position: absolute; inset: 0; background: var(--scrim);
+  animation: scrimIn var(--dur-m) ease both;
+}
+.scrim.out { animation: scrimOut var(--dur-m) ease both; }
+@keyframes scrimIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scrimOut { from { opacity: 1; } to { opacity: 0; } }
+
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; max-height: 72vh;
+  display: flex; flex-direction: column;
+  background: var(--surface-container-low);
+  border-radius: var(--shape-2xl) var(--shape-2xl) 0 0;
+  box-shadow: var(--elev-3);
+  animation: sheetUp var(--dur-l) var(--ease-emph) both;
+  padding-bottom: env(safe-area-inset-bottom);
+  transition: transform var(--dur-m) var(--ease-emph);
+}
+.sheet.out { animation: sheetDown var(--dur-m) var(--ease-emph) both; }
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes sheetDown { from { transform: translateY(0); } to { transform: translateY(100%); } }
+
+.sheet-handle {
+  width: 68rpx; height: 8rpx; border-radius: 4rpx;
+  background: var(--outline-variant); margin: 20rpx auto 4rpx; flex-shrink: 0;
+}
+.sheet-hd {
+  display: flex; align-items: center; justify-content: center;
+  position: relative; padding: 16rpx 36rpx 20rpx; flex-shrink: 0;
+}
+.sheet-tt { font-size: 31rpx; font-weight: 700; }
+.sheet-x {
+  position: absolute; right: 24rpx; top: 4rpx;
+  width: 68rpx; height: 68rpx; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-variant);
+}
+.sheet-body { overflow-y: auto; padding: 8rpx 0 28rpx; }
+/* sheet 插槽内容样式（sheet-row / share 等）位于 app.wxss —— slot 内容属于页面作用域 */

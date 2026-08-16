@@ -1,0 +1,42 @@
+.dlg-wrap {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  z-index: 1210;
+}
+.scrim {
+  position: absolute; inset: 0; background: var(--scrim);
+  animation: scrimIn var(--dur-m) ease both;
+}
+.scrim.out { animation: scrimOut var(--dur-m) ease both; }
+@keyframes scrimIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scrimOut { from { opacity: 1; } to { opacity: 0; } }
+
+.dlg {
+  position: relative; width: 600rpx; background: var(--surface-container-high);
+  border-radius: var(--shape-2xl); padding: 48rpx 44rpx 32rpx;
+  box-shadow: var(--elev-3);
+  animation: dlgIn var(--dur-m) var(--ease-spring) both;
+}
+.dlg.out { animation: dlgOut var(--dur-s) ease both; }
+@keyframes dlgIn { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: scale(1); } }
+@keyframes dlgOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(.9); } }
+
+.dlg-avatar {
+  width: 108rpx; height: 108rpx; border-radius: 50%;
+  background: var(--wx-green); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  margin: 4rpx auto 24rpx;
+}
+.dlg-title { font-size: 34rpx; font-weight: 700; text-align: center; }
+.dlg-body {
+  font-size: 28rpx; line-height: 1.75; color: var(--on-surface-variant);
+  text-align: center; margin-top: 20rpx;
+}
+.dlg-btns { display: flex; justify-content: flex-end; gap: 12rpx; margin-top: 36rpx; }
+.dlg-btn {
+  display: flex; align-items: center; gap: 12rpx;
+  height: 76rpx; padding: 0 32rpx; border-radius: 38rpx;
+  font-size: 29rpx; color: var(--primary); font-weight: 600;
+}
+.dlg-btn.primary { background: var(--primary); color: var(--on-primary); }
+.dlg-btn.wxf { background: var(--wx-green); color: #fff; }
+.dlg-btn.error { color: var(--error); }

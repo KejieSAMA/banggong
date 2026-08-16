@@ -1,0 +1,64 @@
+<view class="page {{theme}}">
+  <view class="page-body tab-pad">
+    <view class="home-hero">
+      <view class="searchbar" hover-class="hv-sink" hover-stay-time="80" data-act="open-search" bindtap="handleAct">
+        <icon name="search" size="40" />
+        <text class="ph">搜索文具 / 办公用品</text>
+      </view>
+    </view>
+
+    <view class="banner-swiper">
+      <swiper class="bs" autoplay circular interval="3500" duration="280" bindchange="onBannerChange">
+        <swiper-item wx:for="{{banners}}" wx:key="img" data-act="go-mall" bindtap="handleAct">
+          <view class="banner-item">
+            <image src="{{item.img}}" mode="aspectFill" />
+            <view class="banner-txt">
+              <view class="t1">{{item.t1}}</view>
+              <view class="t2">{{item.t2}}</view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+      <view class="banner-dots">
+        <view wx:for="{{banners}}" wx:key="img" class="bd {{bannerIdx === index ? 'on' : ''}}" />
+      </view>
+    </view>
+
+    <view class="quick-nav">
+      <view
+        wx:for="{{cats}}"
+        wx:key="id"
+        class="qn-item"
+        hover-class="hv-sink"
+        hover-stay-time="80"
+        data-act="open-category"
+        data-id="{{item.id}}"
+        bindtap="handleAct"
+      >
+        <view class="qn-ic"><icon name="{{item.icon}}" size="48" /></view>
+        <text class="qn-lb">{{item.name}}</text>
+      </view>
+    </view>
+
+    <view class="section-hd">
+      <view class="h3">为你推荐</view>
+      <view class="section-more" hover-class="hv-cell" hover-stay-time="80" data-act="go-mall" bindtap="handleAct">
+        全部商品<icon name="chevron_right" size="36" />
+      </view>
+    </view>
+    <view class="grid2">
+      <product-card
+        wx:for="{{hot}}"
+        wx:key="id"
+        product="{{item}}"
+        fav="{{item.fav}}"
+        delay="{{item.delay}}"
+        data-act="open-product"
+        data-id="{{item.id}}"
+        bindtap="handleAct"
+        bind:fav="onCardFav"
+      />
+    </view>
+  </view>
+  <toast id="toast" />
+</view>

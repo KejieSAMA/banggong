@@ -1,0 +1,19 @@
+/* 设置页（对应 demo §12） */
+.plain-tit { padding-left: 8rpx; }
+.btn-logout {
+  background: var(--surface); color: var(--error);
+  box-shadow: 0 0 0 2rpx var(--outline-variant);
+}
+.about-hero {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 20rpx; padding: 44rpx 0 12rpx;
+}
+.home-logo-lg {
+  width: 128rpx; height: 128rpx; border-radius: 40rpx;
+  background: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--elev-1);
+}
+.about-name { font-size: 34rpx; font-weight: 700; color: var(--on-surface); }
+.about-ver { font-size: 24rpx; color: var(--on-surface-variant); }
+.sub-inline { font-size: 24rpx; color: var(--on-surface-variant); }

@@ -1,0 +1,128 @@
+<view class="page {{theme}}">
+  <block wx:if="{{notFound}}">
+    <empty-state icon="inventory_2" text="商品不存在或已下架" btnText="去逛逛" bind:action="handleAct" data-act="go-mall" />
+  </block>
+
+  <block wx:elif="{{p}}">
+    <view class="page-body dtl-pad">
+      <view class="dtl-hero">
+        <swiper class="dtl-swiper" circular bindchange="onGallery">
+          <swiper-item wx:for="{{imgs}}" wx:key="*this">
+            <image src="{{item}}" mode="aspectFill" />
+          </swiper-item>
+        </swiper>
+        <view class="dtl-dots">
+          <view wx:for="{{imgs}}" wx:key="*this" class="dd {{imgIdx === index ? 'on' : ''}}" />
+        </view>
+        <view class="dtl-idx">{{imgIdx + 1}}/{{galleryLen}}</view>
+      </view>
+
+      <view class="dtl-sec">
+        <view class="dtl-price-row">
+          <view class="price big"><text class="num">{{priceText}}</text></view>
+          <text wx:if="{{origText}}" class="orig">{{origText}}</text>
+          <text class="dtl-meta right">{{soldText}}</text>
+          <view class="dtl-meta rate"><icon name="star-fill" size="28" />{{p.rating}} 分</view>
+        </view>
+        <view class="dtl-name">{{p.name}}</view>
+        <view class="dtl-tags">
+          <view wx:if="{{p.tag === 'hot'}}" class="tag tag-hot">热卖</view>
+          <view wx:if="{{p.tag === 'new'}}" class="tag tag-new">新品</view>
+          <view class="tag tag-ship">包邮</view>
+          <view class="tag tag-plain">正品保障</view>
+        </view>
+      </view>
+
+      <view class="dtl-sec sec-pad">
+        <view class="section-hd plain"><view class="h3">规格参数</view></view>
+        <view class="specs-grid">
+          <view class="spec-it" wx:for="{{specs}}" wx:key="index">
+            <text class="k">{{item[0]}}</text><text class="v">{{item[1]}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="dtl-sec sec-pad2">
+        <view class="section-hd plain"><view class="h3">商品详情</view></view>
+        <text class="dtl-desc-p" user-select>{{p.desc}}</text>
+        <view class="dtl-fakeimg">
+          <icon name="print" size="84" />
+          <text>详 情 图 · {{p.brand}}</text>
+        </view>
+      </view>
+
+      <block wx:if="{{related.length}}">
+        <view class="section-hd"><view class="h3">大家都在看</view></view>
+        <view class="grid2">
+          <product-card
+            wx:for="{{related}}"
+            wx:key="id"
+            product="{{item}}"
+            fav="{{item.fav}}"
+            delay="{{item.delay}}"
+            data-act="open-product"
+            data-id="{{item.id}}"
+            bindtap="handleAct"
+            bind:fav="onCardFav"
+          />
+        </view>
+      </block>
+      <view style="height:28rpx" />
+    </view>
+
+    <view class="dtl-bar">
+      <view class="dtl-act" hover-class="hv-cell" hover-stay-time="80" data-act="open-service" bindtap="handleAct">
+        <icon name="support_agent" size="44" /><text>客服</text>
+      </view>
+      <view class="dtl-act {{favOn ? 'on' : ''}}" data-act="toggle-fav" bindtap="handleAct">
+        <icon wx:if="{{favOn}}" name="favorite-fill" size="44" />
+        <icon wx:else name="favorite" size="44" />
+        <text>收藏</text>
+      </view>
+      <view class="dtl-act" hover-class="hv-cell" hover-stay-time="80" data-act="open-share" bindtap="handleAct">
+        <icon name="share" size="44" /><text>分享</text>
+      </view>
+      <view class="dtl-buy" hover-class="hv-sink" hover-stay-time="80" data-act="add-list" bindtap="handleAct">
+        <icon name="shopping_bag" size="38" /><text>加入采购单</text>
+      </view>
+    </view>
+  </block>
+
+  <sheet visible="{{shareVisible}}" title="分享至" bind:close="onShareClose">
+    <view class="share-row">
+      <button class="share-btn-reset" open-type="share">
+        <view class="share-it">
+          <view class="sic sic-wx"><icon name="chat" size="48" color="#FFFFFF" /></view>
+          <text class="s-lb">微信好友</text>
+        </view>
+      </button>
+      <view class="share-it" hover-class="hv-cell" hover-stay-time="80" data-share="朋友圈" bindtap="onShareTap">
+        <view class="sic sic-moments"><icon name="groups" size="48" color="#FFFFFF" /></view>
+        <text class="s-lb">朋友圈</text>
+      </view>
+      <view class="share-it" hover-class="hv-cell" hover-stay-time="80" data-share="复制链接" bindtap="onShareTap">
+        <view class="sic sic-link"><icon name="content_copy" size="48" color="#FFFFFF" /></view>
+        <text class="s-lb">复制链接</text>
+      </view>
+    </view>
+  </sheet>
+
+  <sheet visible="{{serviceVisible}}" title="联系客服" bind:close="onServiceClose">
+    <view class="sheet-row">
+      <icon name="schedule" size="44" />
+      <view class="lab">工作时间<text class="sub">周一至周五 9:00 - 18:00</text></view>
+    </view>
+    <view class="sheet-row" hover-class="hv-cell" hover-stay-time="80" data-svc="电话" bindtap="onService">
+      <icon name="phone_in_talk" size="44" />
+      <view class="lab">客服热线 400-800-1234</view>
+      <icon name="chevron_right" size="36" class="chev" />
+    </view>
+    <view class="sheet-row" hover-class="hv-cell" hover-stay-time="80" data-svc="在线" bindtap="onService">
+      <view class="cell-ic" style="width:68rpx;height:68rpx"><icon name="support_agent" size="40" /></view>
+      <view class="lab">在线客服<text class="sub">平均响应 1 分钟</text></view>
+      <icon name="chevron_right" size="36" class="chev" />
+    </view>
+  </sheet>
+
+  <toast id="toast" />
+</view>

@@ -1,0 +1,60 @@
+/* 我的页（对应 demo §11；顶部内边距因原生导航栏而缩小） */
+.me-head {
+  position: relative; padding: 44rpx 40rpx 0; overflow: hidden;
+  background: linear-gradient(165deg, var(--primary) 0%, var(--primary-container) 130%);
+}
+.me-head::after {
+  content: ""; position: absolute; right: -92rpx; top: -92rpx;
+  width: 380rpx; height: 380rpx; border-radius: 50%;
+  background: rgba(255,255,255,.09);
+}
+.me-head::before {
+  content: ""; position: absolute; right: 52rpx; top: 128rpx;
+  width: 128rpx; height: 128rpx; border-radius: 50%;
+  background: rgba(255,255,255,.08);
+}
+.me-user {
+  display: flex; align-items: center; gap: 28rpx;
+  position: relative; z-index: 2; padding-bottom: 36rpx;
+}
+.avatar {
+  width: 124rpx; height: 124rpx; border-radius: 50%;
+  background: var(--surface-container-highest);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-variant);
+  border: 5rpx solid rgba(255,255,255,.75); flex-shrink: 0;
+}
+.me-user-info { flex: 1; min-width: 0; }
+.me-name { color: #fff; font-size: 38rpx; font-weight: 700; display: flex; align-items: center; gap: 12rpx; }
+.me-vip {
+  display: inline-flex; align-items: center; gap: 6rpx;
+  font-size: 21rpx; font-weight: 600; color: #fff;
+  background: rgba(255,255,255,.22);
+  padding: 5rpx 18rpx; border-radius: 18rpx; margin-top: 12rpx;
+}
+.me-stats {
+  display: flex; background: rgba(255,255,255,.13);
+  border-radius: var(--shape-lg) var(--shape-lg) 0 0;
+  position: relative; z-index: 2;
+}
+.me-stat {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4rpx;
+  padding: 28rpx 0 26rpx; color: #fff;
+}
+.me-stat .n { font-size: 38rpx; font-weight: 800; }
+.me-stat .t { font-size: 23rpx; opacity: .85; }
+.hv-stat { background: rgba(255,255,255,.1); }
+
+.me-grid { display: grid; grid-template-columns: repeat(4, 1fr); padding: 32rpx 16rpx 8rpx; }
+.me-g-it {
+  display: flex; flex-direction: column; align-items: center; gap: 16rpx;
+  padding: 16rpx 0; border-radius: var(--shape-md);
+}
+.me-g-it icon { color: var(--primary); }
+.me-g-it text { font-size: 23rpx; color: var(--on-surface); }
+.me-srv-hd {
+  font-size: 30rpx; font-weight: 700; padding: 24rpx 36rpx 8rpx;
+  display: flex; align-items: center; gap: 14rpx;
+}
+.me-srv-hd::before { content: ""; width: 8rpx; height: 30rpx; border-radius: 4rpx; background: var(--primary); }
+.srv-group { margin-top: 16rpx; }

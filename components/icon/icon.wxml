@@ -1,0 +1,4 @@
+<view
+  class="ic im-{{cls}}"
+  style="width:{{size}}rpx;height:{{size}}rpx;{{color ? 'background-color:' + color + ';' : ''}}"
+/>

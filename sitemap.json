@@ -1,0 +1,6 @@
+{
+  "desc": "办公严选站点地图",
+  "rules": [
+    { "action": "allow", "page": "*" }
+  ]
+}

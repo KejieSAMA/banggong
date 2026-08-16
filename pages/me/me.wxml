@@ -1,0 +1,94 @@
+<view class="page {{theme}}">
+  <view class="page-body tab-pad">
+    <view class="me-head">
+      <view class="me-user" hover-class="hv-sink" hover-stay-time="80" data-act="{{loginName ? '' : 'open-login'}}" bindtap="handleAct">
+        <view class="avatar"><icon name="person" size="68" /></view>
+        <view class="me-user-info">
+          <view class="me-name">
+            <text>{{loginName || '点击登录'}}</text>
+            <icon wx:if="{{!loginName}}" name="chevron_right" size="36" />
+          </view>
+          <view class="me-vip">
+            <icon name="redeem" size="28" />
+            <text>{{loginName ? '普通会员 · 积分 320' : '登录后享专属价'}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="me-stats">
+        <view class="me-stat" hover-class="hv-stat" hover-stay-time="80" data-act="nav-favorites" bindtap="handleAct">
+          <text class="n">{{favCount}}</text><text class="t">收藏</text>
+        </view>
+        <view class="me-stat" hover-class="hv-stat" hover-stay-time="80" data-act="nav-history" bindtap="handleAct">
+          <text class="n">{{hisCount}}</text><text class="t">足迹</text>
+        </view>
+        <view class="me-stat" hover-class="hv-stat" hover-stay-time="80" data-act="toast-coupon" bindtap="handleAct">
+          <text class="n">3</text><text class="t">优惠券</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="me-grid">
+      <view class="me-g-it" hover-class="hv-cell" hover-stay-time="80" data-act="nav-favorites" bindtap="handleAct"><icon name="favorite" size="50" /><text>我的收藏</text></view>
+      <view class="me-g-it" hover-class="hv-cell" hover-stay-time="80" data-act="nav-history" bindtap="handleAct"><icon name="history" size="50" /><text>浏览足迹</text></view>
+      <view class="me-g-it" hover-class="hv-cell" hover-stay-time="80" data-act="toast-todo" bindtap="handleAct"><icon name="rate_review" size="50" /><text>待评价</text></view>
+      <view class="me-g-it" hover-class="hv-cell" hover-stay-time="80" data-act="toast-coupon" bindtap="handleAct"><icon name="redeem" size="50" /><text>优惠券</text></view>
+    </view>
+
+    <view class="me-srv-hd">我的服务</view>
+    <view class="cell-group srv-group">
+      <view class="cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-todo" bindtap="handleAct">
+        <view class="cell-ic"><icon name="location_on" size="40" /></view>
+        <text class="cell-tit">收货地址</text>
+        <icon name="chevron_right" size="40" class="chev" />
+      </view>
+      <view class="cell-div" />
+      <view class="cell" hover-class="hv-cell" hover-stay-time="80" data-act="open-service" bindtap="handleAct">
+        <view class="cell-ic"><icon name="support_agent" size="40" /></view>
+        <text class="cell-tit">联系客服</text>
+        <icon name="chevron_right" size="40" class="chev" />
+      </view>
+      <view class="cell-div" />
+      <view class="cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-feedback" bindtap="handleAct">
+        <view class="cell-ic"><icon name="forum" size="40" /></view>
+        <text class="cell-tit">意见反馈</text>
+        <icon name="chevron_right" size="40" class="chev" />
+      </view>
+      <view class="cell-div" />
+      <view class="cell" hover-class="hv-cell" hover-stay-time="80" data-act="open-settings" bindtap="handleAct">
+        <view class="cell-ic"><icon name="settings" size="40" /></view>
+        <text class="cell-tit">设置</text>
+        <icon name="chevron_right" size="40" class="chev" />
+      </view>
+    </view>
+    <view style="height:40rpx" />
+  </view>
+
+  <dialog
+    visible="{{loginVisible}}"
+    avatar="person"
+    title="微信授权登录"
+    content="「办公严选」申请获取你的昵称、头像"
+    actions="{{loginActions}}"
+    bind:close="onLoginClose"
+    bind:action="onLoginAction"
+  />
+
+  <sheet visible="{{serviceVisible}}" title="联系客服" bind:close="onServiceClose">
+    <view class="sheet-row">
+      <icon name="schedule" size="44" />
+      <view class="lab">工作时间<text class="sub">周一至周五 9:00 - 18:00</text></view>
+    </view>
+    <view class="sheet-row" hover-class="hv-cell" hover-stay-time="80" data-svc="电话" bindtap="onService">
+      <icon name="phone_in_talk" size="44" />
+      <view class="lab">客服热线 400-800-1234</view>
+      <icon name="chevron_right" size="36" class="chev" />
+    </view>
+    <view class="sheet-row" hover-class="hv-cell" hover-stay-time="80" data-svc="在线" bindtap="onService">
+      <view class="cell-ic" style="width:68rpx;height:68rpx"><icon name="support_agent" size="40" /></view>
+      <view class="lab">在线客服<text class="sub">平均响应 1 分钟</text></view>
+      <icon name="chevron_right" size="36" class="chev" />
+    </view>
+  </sheet>
+
+  <toast id="toast" />
+</view>

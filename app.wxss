@@ -1,0 +1,281 @@
+/* ============================================================
+   办公严选 · 全局样式
+   1. Design Tokens（M3 靛蓝 · 明/暗，与 demo 1:1 对应）
+   说明：demo 尺寸统一按 1px → 2rpx 换算（390 设计稿），
+        描边/阴影也不例外，全项目不再使用 px 单位。
+   ============================================================ */
+page,
+.light {
+  --primary:#4355B9; --on-primary:#FFFFFF;
+  --primary-container:#DEE0FF; --on-primary-container:#0B1A7A;
+  --secondary:#595D72; --on-secondary:#FFFFFF;
+  --secondary-container:#DEE1F9; --on-secondary-container:#161B2C;
+  --tertiary:#8A5100; --tertiary-container:#FFDCBE;
+  --error:#BA1A1A; --error-container:#FFDAD6; --on-error-container:#410002;
+  --surface:#FBF8FF; --on-surface:#1A1B21;
+  --surface-variant:#E2E1EC; --on-surface-variant:#45464F;
+  --surface-dim:#DBD9E0;
+  --surface-container-lowest:#FFFFFF; --surface-container-low:#F5F3FA;
+  --surface-container:#EFEDF4; --surface-container-high:#E9E7EF; --surface-container-highest:#E3E1E9;
+  --outline:#777680; --outline-variant:#C6C5D0;
+  --inverse-surface:#2F3036; --inverse-on-surface:#F1F0F7;
+  --scrim:rgba(0,0,0,.45);
+  --price:#D8412F; --on-price:#FFFFFF;
+  --wx-green:#07C160;
+  --shape-sm:16rpx; --shape-md:24rpx; --shape-lg:32rpx; --shape-xl:40rpx; --shape-2xl:56rpx;
+  --elev-1:0 2rpx 4rpx rgba(0,0,0,.3),0 2rpx 6rpx 2rpx rgba(0,0,0,.15);
+  --elev-2:0 2rpx 4rpx rgba(0,0,0,.3),0 4rpx 12rpx 4rpx rgba(0,0,0,.15);
+  --elev-3:0 2rpx 6rpx rgba(0,0,0,.3),0 8rpx 16rpx 6rpx rgba(0,0,0,.15);
+  --ease-emph:cubic-bezier(.2,0,0,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --dur-s:120ms; --dur-m:200ms; --dur-l:280ms;
+}
+.dark {
+  --primary:#BAC3FF; --on-primary:#08218A;
+  --primary-container:#2B3D9C; --on-primary-container:#DEE0FF;
+  --secondary:#C3C5D4; --secondary-container:#424559; --on-secondary-container:#DEE1F9;
+  --tertiary:#FFB868; --tertiary-container:#653E00;
+  --error:#FFB4AB; --error-container:#93000A; --on-error-container:#FFDAD6;
+  --surface:#121318; --on-surface:#E3E1EC;
+  --surface-variant:#45464F; --on-surface-variant:#C6C5D0;
+  --surface-dim:#121318;
+  --surface-container-lowest:#0C0E13; --surface-container-low:#1A1B21;
+  --surface-container:#1E1F27; --surface-container-high:#282A32; --surface-container-highest:#333541;
+  --outline:#90909B; --outline-variant:#45464F;
+  --inverse-surface:#E3E1EC; --inverse-on-surface:#2F3036;
+  --scrim:rgba(0,0,0,.6);
+  --price:#FFB4A6;
+}
+
+/* ============================================================
+   2. 页面基座
+   ============================================================ */
+page {
+  background: var(--surface); /* 暗色由 .dark 根节点覆盖 + wx.setBackgroundColor 同步 */
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+}
+/* 全局 border-box（对应 demo 的 *{box-sizing:border-box} 重置；WXSS 不支持 * 选择器）：
+   缺失时 width:100% 与 padding 叠加 → chip 叠压 / list-row 溢出屏幕 */
+view, text, image, button, input, textarea, scroll-view, swiper, swiper-item, navigator, form, rich-text {
+  box-sizing: border-box;
+}
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--on-surface);
+}
+.page-fill { height: 100vh; } /* 需要内部滚动的页面（分类页） */
+.page-body { flex: 1; }
+/* tab 页内容预留自定义 tabBar 高度 + 安全区（与 custom-tab-bar 高度保持一致） */
+.tab-pad { padding-bottom: calc(100rpx + env(safe-area-inset-bottom)); }
+/* 二级页固定底栏预留（商品详情） */
+.dtl-pad { padding-bottom: calc(176rpx + env(safe-area-inset-bottom)); }
+
+/* 按压态（view 无 :active，统一 hover-class） */
+.hv-sink { transform: scale(.97); opacity: .92; }
+.hv-bg { background: var(--surface-container-low) !important; }
+.hv-cell { background: var(--surface-container-low) !important; }
+
+/* ============================================================
+   3. 通用组件（与 demo §4 逐一对应）
+   ============================================================ */
+/* 按钮 */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12rpx;
+  height: 80rpx; padding: 0 44rpx; border-radius: 9999rpx;
+  font-size: 29rpx; font-weight: 600; line-height: 1;
+}
+.btn::after { border: none; }
+.btn-filled { background: var(--primary); color: var(--on-primary); }
+.btn-tonal { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-text { color: var(--primary); padding: 0 28rpx; }
+.btn-block { width: 100%; }
+.btn-wx { background: var(--wx-green); color: #fff; }
+
+/* chip */
+.chip {
+  position: relative; overflow: hidden; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 64rpx; padding: 0 30rpx;
+  border-radius: var(--shape-sm); background: var(--surface-container);
+  color: var(--on-surface-variant); font-size: 26rpx; font-weight: 500;
+  white-space: nowrap; text-align: center;
+}
+.chip.active { background: var(--secondary-container); color: var(--on-secondary-container); font-weight: 600; }
+
+/* 列表单元 */
+.cell {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 28rpx; min-height: 104rpx;
+  padding: 16rpx 36rpx; background: var(--surface);
+  width: 100%; text-align: left; font-size: 30rpx; color: var(--on-surface);
+}
+.cell-ic {
+  width: 72rpx; height: 72rpx; border-radius: 50%;
+  background: var(--surface-container-high);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-variant); flex-shrink: 0;
+}
+.cell-tit { flex: 1; min-width: 0; }
+.cell-sub { font-size: 24rpx; color: var(--on-surface-variant); margin-top: 4rpx; }
+.cell-val { font-size: 27rpx; color: var(--on-surface-variant); display: flex; align-items: center; gap: 4rpx; }
+.cell .chev { color: var(--on-surface-variant); opacity: .55; }
+.cell-group {
+  border-radius: var(--shape-lg); overflow: hidden; margin: 0 28rpx 28rpx;
+  background: var(--surface); box-shadow: 0 0 0 2rpx var(--outline-variant);
+}
+.cell-div { height: 2rpx; background: var(--outline-variant); margin-left: 136rpx; opacity: .6; }
+.set-cell { min-height: 112rpx; }
+.set-cell .cell-tit { font-size: 30rpx; }
+.set-foot { padding: 52rpx 28rpx; }
+
+/* 开关（M3 switch） */
+.switch {
+  width: 100rpx; height: 60rpx; border-radius: 30rpx;
+  background: var(--surface-container-highest);
+  border: 4rpx solid var(--outline); position: relative; flex-shrink: 0;
+}
+.switch::after {
+  content: ""; position: absolute; top: 50%; left: 8rpx; transform: translateY(-50%);
+  width: 28rpx; height: 28rpx; border-radius: 50%; background: var(--outline);
+}
+.switch.on { background: var(--primary); border-color: var(--primary); }
+.switch.on::after {
+  left: 46rpx; width: 40rpx; height: 40rpx; background: var(--on-primary);
+  box-shadow: 0 0 0 6rpx var(--surface), 0 2rpx 6rpx rgba(0,0,0,.25);
+}
+
+/* 分区标题 */
+.section-hd { display: flex; align-items: baseline; justify-content: space-between; padding: 40rpx 32rpx 24rpx; }
+.section-hd .h3 {
+  font-size: 34rpx; font-weight: 700; letter-spacing: .4rpx;
+  display: flex; align-items: center; gap: 14rpx; color: var(--on-surface);
+}
+.section-hd .h3::before { content: ""; width: 8rpx; height: 32rpx; border-radius: 4rpx; background: var(--primary); }
+.section-more {
+  font-size: 26rpx; color: var(--on-surface-variant);
+  display: flex; align-items: center; gap: 2rpx;
+}
+
+/* 价格 / 标签 / 双列网格 */
+.price { color: var(--price); font-weight: 800; font-size: 32rpx; }
+.price::before { content: "¥"; font-size: 22rpx; font-weight: 700; margin-right: 2rpx; }
+.price .num { font-size: 33rpx; }
+.orig { color: var(--on-surface-variant); font-size: 22rpx; text-decoration: line-through; opacity: .8; }
+.tag {
+  display: inline-flex; align-items: center; height: 34rpx; padding: 0 12rpx;
+  border-radius: 8rpx; font-size: 21rpx; font-weight: 600; flex-shrink: 0;
+}
+.tag-hot { background: var(--error-container); color: var(--on-error-container); }
+.tag-new { background: var(--primary-container); color: var(--on-primary-container); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22rpx; padding: 0 28rpx; }
+
+/* 行式卡（搜索/收藏/足迹） */
+.list-row {
+  display: flex; gap: 24rpx; padding: 24rpx 28rpx;
+  background: var(--surface-container-lowest);
+  border-radius: var(--shape-lg); box-shadow: 0 0 0 2rpx var(--outline-variant);
+  margin: 0 28rpx 20rpx; position: relative; overflow: hidden; text-align: left;
+  width: calc(100% - 56rpx);
+  animation: staggerIn .3s var(--ease-emph) both;
+}
+.list-row .thumb {
+  width: 172rpx; height: 172rpx; border-radius: var(--shape-md);
+  overflow: hidden; background: var(--surface-container); flex-shrink: 0;
+}
+.list-row .thumb image { width: 100%; height: 100%; }
+.list-row .info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.list-row .prod-name {
+  font-size: 26rpx; line-height: 1.45; color: var(--on-surface); font-weight: 500;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 8rpx;
+}
+.list-row .sold { font-size: 22rpx; color: var(--on-surface-variant); }
+.list-row .fav-btn {
+  width: 52rpx; height: 52rpx; margin-left: auto; align-self: flex-end;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-variant); flex-shrink: 0;
+}
+.list-row .fav-btn.on { color: var(--price); }
+.list-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20rpx 36rpx 16rpx; font-size: 25rpx; color: var(--on-surface-variant);
+}
+.list-bar .lb-btn {
+  display: flex; align-items: center; gap: 6rpx; font-size: 25rpx;
+  color: var(--on-surface-variant); padding: 8rpx 16rpx; border-radius: 16rpx;
+}
+
+/* 图片加载失败兜底 */
+.thumb-fallback {
+  display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;
+  background: var(--surface-container); color: var(--on-surface-variant); opacity: .55;
+}
+
+/* 空态 */
+.empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12rpx; padding: 104rpx 60rpx; color: var(--on-surface-variant);
+}
+.empty .eic { opacity: .34; margin-bottom: 12rpx; }
+.empty .etxt { font-size: 28rpx; }
+.empty .btn { margin-top: 24rpx; }
+
+/* ============================================================
+   4. 通用动画
+   ============================================================ */
+@keyframes staggerIn { from { opacity: 0; transform: translateY(28rpx); } to { opacity: 1; transform: translateY(0); } }
+@keyframes heartPop { 0% { transform: scale(.4); } 55% { transform: scale(1.35); } 100% { transform: scale(1); } }
+@keyframes spinGo { to { transform: rotate(360deg); } }
+.spin {
+  width: 30rpx; height: 30rpx; border-radius: 50%;
+  border: 4rpx solid rgba(255,255,255,.35); border-top-color: #fff;
+  animation: spinGo .7s linear infinite; display: inline-block;
+}
+
+/* ============================================================
+   5. sheet 插槽内容样式（sheet-row 等）
+   说明：slot 内容属于页面作用域，故放全局
+   ============================================================ */
+.sheet-row {
+  display: flex; align-items: center; gap: 28rpx;
+  padding: 26rpx 44rpx; width: 100%; text-align: left;
+  color: var(--on-surface);
+}
+.sheet-row .lab { flex: 1; font-size: 30rpx; }
+.sheet-row .sub { font-size: 24rpx; color: var(--on-surface-variant); display: block; margin-top: 2rpx; }
+.sheet-row .chev { color: var(--on-surface-variant); opacity: .8; }
+.sheet-row .radio {
+  width: 40rpx; height: 40rpx; border-radius: 50%;
+  border: 4rpx solid var(--outline); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.sheet-row.sel .radio { border-color: var(--primary); }
+.sheet-row.sel .radio::after {
+  content: ""; width: 20rpx; height: 20rpx; border-radius: 50%; background: var(--primary);
+}
+.sheet-row.sel .lab { color: var(--primary); font-weight: 600; }
+.sheet-sw-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 26rpx 44rpx;
+}
+.sheet-sw-row .lab { font-size: 30rpx; }
+.sheet-btns { display: flex; gap: 20rpx; padding: 20rpx 36rpx 32rpx; }
+
+/* 分享宫格 */
+.share-row { display: flex; justify-content: space-evenly; padding: 32rpx 20rpx 44rpx; }
+.share-it {
+  display: flex; flex-direction: column; align-items: center; gap: 18rpx;
+  padding: 8rpx 16rpx; border-radius: 24rpx;
+}
+.share-it .sic {
+  width: 104rpx; height: 104rpx; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: #fff;
+}
+.share-it .s-lb { font-size: 24rpx; color: var(--on-surface-variant); }
+.sic-wx { background: var(--wx-green); }
+.sic-moments { background: #5BAD0C; }
+.sic-link { background: var(--on-surface-variant); }

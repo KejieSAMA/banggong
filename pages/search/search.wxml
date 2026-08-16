@@ -1,0 +1,101 @@
+<view class="page {{theme}}">
+  <view class="srch-bar">
+    <view class="srch-input">
+      <icon name="search" size="36" />
+      <input
+        class="s-in"
+        value="{{kw}}"
+        placeholder="搜索商品名称 / 分类"
+        placeholder-class="s-ph"
+        confirm-type="search"
+        bindinput="onInput"
+        bindconfirm="onConfirm"
+      />
+      <view wx:if="{{showClr}}" class="srch-clr" catchtap="onClearInput">
+        <icon name="close" size="28" />
+      </view>
+    </view>
+    <view class="srch-cancel" hover-class="hv-cell" hover-stay-time="80" bindtap="onCancel">取消</view>
+  </view>
+
+  <view class="page-body">
+    <block wx:if="{{mode === 'idle'}}">
+      <block wx:if="{{history.length}}">
+        <view class="srch-sect-hd">
+          <text class="h4">搜索历史</text>
+          <view class="clear-his" hover-class="hv-cell" hover-stay-time="80" bindtap="onClearHistory">
+            <icon name="delete" size="32" />清空
+          </view>
+        </view>
+        <view class="srch-chips">
+          <view
+            wx:for="{{history}}"
+            wx:key="*this"
+            class="srch-chip"
+            hover-class="hv-chip"
+            hover-stay-time="80"
+            data-id="{{item}}"
+            bindtap="onQuick"
+          >{{item}}</view>
+        </view>
+      </block>
+
+      <view class="srch-sect-hd"><text class="h4">热门搜索</text></view>
+      <view class="hot-rank">
+        <view
+          wx:for="{{hot}}"
+          wx:key="*this"
+          class="hot-it"
+          hover-class="hv-cell"
+          hover-stay-time="80"
+          data-id="{{item}}"
+          bindtap="onQuick"
+        >
+          <view class="rk {{index < 3 ? 'top' : ''}}">{{index + 1}}</view>
+          <text class="kw">{{item}}</text>
+          <text wx:if="{{index < 3}}" class="hot-tag">热</text>
+        </view>
+      </view>
+    </block>
+
+    <block wx:elif="{{mode === 'empty'}}">
+      <empty-state icon="search_off" text="没有找到“{{kw}}”相关商品" btnText="看看热门搜索" bind:action="onReset" />
+      <view class="srch-chips pad-top">
+        <view
+          wx:for="{{hotChips}}"
+          wx:key="*this"
+          class="srch-chip"
+          hover-class="hv-chip"
+          hover-stay-time="80"
+          data-id="{{item}}"
+          bindtap="onQuick"
+        >{{item}}</view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="srch-count">{{countText}}</view>
+      <view
+        wx:for="{{results}}"
+        wx:key="id"
+        class="list-row"
+        style="animation-delay:{{item.delay}}ms"
+        hover-class="hv-cell"
+        hover-stay-time="80"
+        data-id="{{item.id}}"
+        bindtap="onOpen"
+      >
+        <view class="thumb"><image src="{{item.img}}" mode="aspectFill" lazy-load /></view>
+        <view class="info">
+          <view class="prod-name"><rich-text nodes="{{item.nodes}}" /></view>
+          <text class="sold">{{item.brandLine}}</text>
+          <view class="prod-meta mt">
+            <view class="price"><text class="num">{{item.priceText}}</text></view>
+            <text class="sold">{{item.soldText}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <toast id="toast" />
+</view>

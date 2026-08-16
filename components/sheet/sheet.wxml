@@ -1,0 +1,19 @@
+<view wx:if="{{rendered}}" class="sheet-wrap">
+  <view class="scrim {{out ? 'out' : ''}}" catchtap="onClose" />
+  <view class="sheet {{out ? 'out' : ''}}" style="{{dy ? 'transform:translateY(' + dy + 'px);transition:none' : ''}}" catchtap="noop">
+    <view
+      class="sheet-handle"
+      catchtouchstart="onHandleStart"
+      catchtouchmove="onHandleMove"
+      catchtouchend="onHandleEnd"
+      catchtouchcancel="onHandleEnd"
+    />
+    <view class="sheet-hd">
+      <text class="sheet-tt">{{title}}</text>
+      <view class="sheet-x" hover-class="hv-cell" hover-stay-time="80" catchtap="onClose">
+        <icon name="close" size="40" />
+      </view>
+    </view>
+    <view class="sheet-body"><slot /></view>
+  </view>
+</view>

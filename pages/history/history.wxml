@@ -1,0 +1,40 @@
+<view class="page {{theme}}">
+  <view class="page-body">
+    <block wx:if="{{list.length}}">
+      <view class="list-bar">
+        <text>{{countText}}</text>
+        <view class="lb-btn" hover-class="hv-cell" hover-stay-time="80" bindtap="onOpenClear">
+          <icon name="delete" size="32" />清空足迹
+        </view>
+      </view>
+      <view
+        wx:for="{{list}}"
+        wx:key="id"
+        class="list-row"
+        style="animation-delay:{{item.delay}}ms"
+        hover-class="hv-cell"
+        hover-stay-time="80"
+        data-id="{{item.id}}"
+        bindtap="onOpen"
+      >
+        <view class="thumb"><image src="{{item.img}}" mode="aspectFill" lazy-load /></view>
+        <view class="info">
+          <view class="prod-name">{{item.name}}</view>
+          <text class="sold">{{item.brandLine}}</text>
+          <view class="meta-row"><view class="price"><text class="num">{{item.priceText}}</text></view></view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="history" text="暂无浏览足迹" btnText="去逛逛" bind:action="onGoMall" />
+  </view>
+
+  <dialog
+    visible="{{clearVisible}}"
+    title="清空浏览足迹"
+    content="清空后不可恢复，确定要清空全部浏览足迹吗？"
+    actions="{{clearActions}}"
+    bind:close="onClearClose"
+    bind:action="onClearAction"
+  />
+  <toast id="toast" />
+</view>
