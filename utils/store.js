@@ -61,7 +61,7 @@ function cloudPull() {
     state.favorites = [...new Set(state.favorites.concat(cloudFav || []))].slice(0, 200);
     state.history = [...new Set(state.history.concat(cloudHis || []))].slice(0, 20);
     state.searchHistory = [...new Set(state.searchHistory.concat(cloudKwd || []))].slice(0, 8);
-    if (profile && profile.nickname && profile.nickname !== '微信用户') {
+    if (profile && profile.nickname && profile.nickname !== '微信用户' && !profile.loggedOut) {
       state.login = { name: profile.nickname, avatar: profile.avatar || '' };
     }
     persist();
@@ -142,14 +142,20 @@ module.exports = {
     persist(); emit('login');
     push(() => api.saveProfile({ nickname: name, avatar }), 'profile');
   },
-  /* 一键微信登录：身份即 openid，无需填写资料；昵称默认「用户XXXXXX」（6 位随机） */
+  /* 一键微信登录：云端优先——服务端按 openid 确定性生成昵称（用户XXXXXX，恒定不变）
+     并保留历史资料（含用户改过的昵称头像）；云端不可用时本地随机兜底 */
   login() {
-    const suffix = (Math.random().toString(36).slice(2, 8) + '000000').slice(0, 6);
-    this.setProfile('用户' + suffix, '');
+    api.login().then(profile => {
+      this.setProfile(profile.nickname || '微信用户', profile.avatar || '');
+    }).catch(() => {
+      const suffix = (Math.random().toString(36).slice(2, 8) + '000000').slice(0, 6);
+      this.setProfile('用户' + suffix, '');
+    });
   },
-  /* 退出登录：同步重置云端档案，否则下次 cloudPull 会按云端昵称恢复登录态 */
+  /* 退出登录：云端仅置 loggedOut 标记（昵称头像保留，重登取回），本地清登录态。
+     cloudPull 看到 loggedOut 不会自动恢复登录 */
   logout() {
-    push(() => api.saveProfile({ nickname: '微信用户', avatar: '' }), 'profile-reset');
+    push(() => api.saveProfile({ loggedOut: true }), 'profile-logout');
     state.login = null;
     persist(); emit('login');
   },

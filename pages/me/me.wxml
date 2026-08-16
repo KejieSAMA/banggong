@@ -75,9 +75,7 @@
         <view class="btn btn-filled btn-block" hover-class="hv-sink" hover-stay-time="80" bindtap="onLoginConfirm">登录</view>
       </view>
       <view class="privacy-row" catchtap="onPrivacyToggle">
-        <view class="privacy-check {{agree ? 'on' : ''}}">
-          <icon wx:if="{{agree}}" name="check" size="24" />
-        </view>
+        <view class="privacy-check {{agree ? 'on' : ''}}" />
         <view class="privacy-txt">
           已阅读并同意<text class="privacy-link" catchtap="onPrivacyDoc">《用户协议》</text>与<text class="privacy-link" catchtap="onPrivacyDoc">《隐私政策》</text>
         </view>

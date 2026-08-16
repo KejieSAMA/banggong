@@ -115,12 +115,19 @@
   margin-top: 28rpx; padding-bottom: 8rpx;
 }
 .privacy-check {
+  position: relative;
   width: 34rpx; height: 34rpx; border-radius: 8rpx;
   border: 2rpx solid var(--outline);
   background: var(--surface);
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; flex-shrink: 0;
+  flex-shrink: 0;
 }
 .privacy-check.on { background: var(--primary); border-color: var(--primary); }
+/* 纯 CSS 对勾（图标库无单独 check 线性图标） */
+.privacy-check.on::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 16rpx; height: 9rpx;
+  border-left: 4rpx solid #fff; border-bottom: 4rpx solid #fff;
+  transform: translate(-50%, -65%) rotate(-45deg);
+}
 .privacy-txt { font-size: 22rpx; color: var(--on-surface-variant); line-height: 1.5; }
 .privacy-link { color: var(--primary); }

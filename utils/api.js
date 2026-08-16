@@ -114,6 +114,7 @@ module.exports = {
 
   /* —— 用户体系（无本地兜底；code:1/失败由 store 处理为本地模式） —— */
   getProfile: () => remote('/user/profile'),
+  login: () => remote('/user/login', { method: 'POST' }),
   saveProfile: data => remote('/user/profile', { method: 'PUT', data }),
   getFavorites: () => remote('/favorites'),
   saveFavorites: ids => remote('/favorites', { method: 'POST', data: { ids } }),
