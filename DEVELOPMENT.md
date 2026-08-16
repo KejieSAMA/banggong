@@ -77,11 +77,14 @@ miniprogram/
 - 二级页：一律 `wx.navigateTo`（自带原生返回键与转场；非 tab 页不渲染 custom-tab-bar，即自动隐藏底部导航）
 - 返回：`wx.navigateBack`；兜底 `fail` 时 `switchTab` 回首页（防止直达页无栈可退）
 
-## 8. 数据与图片
+## 8. 数据、图片与云同步
 
-- `config/env.js` 三模式：`BASE_URL` 非空直连；否则 `CLOUD.env` 非空走 `wx.cloud.callContainer`（云托管免鉴权，推荐）；均失败回落本地数据
+- `config/env.js` 三模式：`BASE_URL` 非空直连；否则 `CLOUD.env` 非空走 `wx.cloud.callContainer`（云托管免鉴权，自动携带 openid）；均失败回落本地数据
 - 接口：`GET /api/banners | /api/categories | /api/products | /api/products/:id | /api/hot-keywords`（后端仓库：banggong-koa）
 - 本地图片路径 `/images/xx.jpg` 由 api 层拼装；后端应返回完整 URL —— 页面不感知来源
+- **云同步（store.cloudPull）**：启动时拉取云端收藏/足迹/搜索历史/资料，与本地并集合并（离线新增不丢）后回推；开启后本地变更即时 fire-and-forget 推送
+- 云端不可用（`code:1`/网络失败）自动保持本地模式，UI 行为不变；页面永远只读 store，不感知云端状态
+- 用户身份由云托管网关注入的 `x-wx-openid` 承担，无显式登录接口；资料编辑用 `open-type="chooseAvatar"` + `type="nickname"`（微信合规组件）
 
 ## 9. 工程杂项
 

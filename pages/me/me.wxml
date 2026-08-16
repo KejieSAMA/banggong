@@ -1,16 +1,19 @@
 <view class="page {{theme}}">
   <view class="page-body tab-pad">
     <view class="me-head">
-      <view class="me-user" hover-class="hv-sink" hover-stay-time="80" data-act="{{loginName ? '' : 'open-login'}}" bindtap="handleAct">
-        <view class="avatar"><icon name="person" size="68" /></view>
+      <view class="me-user" hover-class="hv-sink" hover-stay-time="80" data-act="open-profile" bindtap="handleAct">
+        <view class="avatar">
+          <image wx:if="{{avatar}}" class="avatar-img" src="{{avatar}}" mode="aspectFill" />
+          <icon wx:else name="person" size="68" />
+        </view>
         <view class="me-user-info">
           <view class="me-name">
-            <text>{{loginName || '点击登录'}}</text>
-            <icon wx:if="{{!loginName}}" name="chevron_right" size="36" />
+            <text>{{loginName || '点击设置资料'}}</text>
+            <icon name="chevron_right" size="36" />
           </view>
           <view class="me-vip">
             <icon name="redeem" size="28" />
-            <text>{{loginName ? '普通会员 · 积分 320' : '登录后享专属价'}}</text>
+            <text>{{loginName ? '普通会员 · 积分 320' : '设置昵称头像，多端同步收藏'}}</text>
           </view>
         </view>
       </view>
@@ -63,15 +66,30 @@
     <view style="height:40rpx" />
   </view>
 
-  <dialog
-    visible="{{loginVisible}}"
-    avatar="person"
-    title="微信授权登录"
-    content="「办公严选」申请获取你的昵称、头像"
-    actions="{{loginActions}}"
-    bind:close="onLoginClose"
-    bind:action="onLoginAction"
-  />
+  <sheet visible="{{profileVisible}}" title="编辑资料" bind:close="onProfileClose">
+    <view class="profile-form">
+      <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image wx:if="{{draftAvatar}}" class="avatar-btn-img" src="{{draftAvatar}}" mode="aspectFill" />
+        <view wx:else class="avatar-btn-holder"><icon name="person" size="68" /></view>
+        <text class="avatar-btn-tip">点击更换头像</text>
+      </button>
+      <view class="nick-row">
+        <text class="lab">昵称</text>
+        <input
+          class="nick-input"
+          type="nickname"
+          placeholder="点击输入昵称"
+          placeholder-class="s-ph"
+          value="{{draftName}}"
+          bindinput="onNameInput"
+          bindblur="onNameInput"
+        />
+      </view>
+      <view class="sheet-btns">
+        <view class="btn btn-filled btn-block" hover-class="hv-sink" hover-stay-time="80" bindtap="onSaveProfile">保存</view>
+      </view>
+    </view>
+  </sheet>
 
   <sheet visible="{{serviceVisible}}" title="联系客服" bind:close="onServiceClose">
     <view class="sheet-row">

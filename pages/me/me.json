@@ -2,7 +2,6 @@
   "navigationBarTitleText": "我的",
   "usingComponents": {
     "icon": "../../components/icon/icon",
-    "dialog": "../../components/dialog/dialog",
     "sheet": "../../components/sheet/sheet",
     "toast": "../../components/toast/toast"
   }

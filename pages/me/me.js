@@ -6,13 +6,12 @@ Page({
   data: {
     theme: 'light',
     loginName: '',
+    avatar: '',
     favCount: 0,
     hisCount: 0,
-    loginVisible: false,
-    loginActions: [
-      { label: '拒绝' },
-      { label: '允许', cls: 'wxf' },
-    ],
+    profileVisible: false,
+    draftName: '',
+    draftAvatar: '',
     serviceVisible: false,
   },
 
@@ -41,6 +40,7 @@ Page({
     const login = store.get('login');
     this.setData({
       loginName: login ? login.name : '',
+      avatar: login && login.avatar ? login.avatar : '',
       favCount: store.get('favorites').length,
       hisCount: store.get('history').length,
     });
@@ -48,7 +48,7 @@ Page({
 
   handleAct(e) {
     const act = e.currentTarget.dataset.act;
-    if (act === 'open-login') this.setData({ loginVisible: true });
+    if (act === 'open-profile') this.openProfile();
     else if (act === 'nav-favorites') wx.navigateTo({ url: '/pages/favorites/favorites' });
     else if (act === 'nav-history') wx.navigateTo({ url: '/pages/history/history' });
     else if (act === 'toast-coupon') ui.toast(this, '优惠券功能仅作展示');
@@ -58,17 +58,47 @@ Page({
     else if (act === 'open-settings') wx.navigateTo({ url: '/pages/settings/settings' });
   },
 
-  /* 登录对话框 */
-  onLoginClose() { this.setData({ loginVisible: false }); },
-  onLoginAction(e) {
-    const { index } = e.detail;
-    this.setData({ loginVisible: false });
-    if (index === 1) {
-      store.login();
-      ui.toast(this, '登录成功，欢迎回来', 'check_circle-fill');
-    } else {
-      ui.toast(this, '已取消登录');
+  /* —— 资料编辑（头像 chooseAvatar + 昵称 nickname 输入框，微信合规组件） —— */
+  openProfile() {
+    this.setData({
+      profileVisible: true,
+      draftName: this.data.loginName,
+      draftAvatar: this.data.avatar,
+    });
+  },
+  onProfileClose() { this.setData({ profileVisible: false }); },
+  onNameInput(e) { this.setData({ draftName: e.detail.value }); },
+
+  onChooseAvatar(e) {
+    const url = e.detail.avatarUrl;
+    if (!url) return;
+    /* 转存 base64 data URL（云端档案用）；失败则仅本机展示 */
+    const ext = (url.split('.').pop() || 'jpg').toLowerCase();
+    const mime = ext === 'png' ? 'png' : (ext === 'webp' ? 'webp' : 'jpeg');
+    wx.getFileSystemManager().readFile({
+      filePath: url,
+      encoding: 'base64',
+      success: res => {
+        const dataUrl = 'data:image/' + mime + ';base64,' + res.data;
+        if (dataUrl.length > 512 * 1024) {
+          ui.toast(this, '头像图片过大，请换一张');
+          return;
+        }
+        this.setData({ draftAvatar: dataUrl });
+      },
+      fail: () => this.setData({ draftAvatar: url }),
+    });
+  },
+
+  onSaveProfile() {
+    const name = (this.data.draftName || '').trim();
+    if (!name) {
+      ui.toast(this, '请输入昵称');
+      return;
     }
+    store.setProfile(name, this.data.draftAvatar);
+    this.setData({ profileVisible: false });
+    ui.toast(this, '资料已保存', 'check_circle-fill');
   },
 
   /* 客服 sheet */

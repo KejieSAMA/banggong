@@ -58,3 +58,33 @@
 }
 .me-srv-hd::before { content: ""; width: 8rpx; height: 30rpx; border-radius: 4rpx; background: var(--primary); }
 .srv-group { margin-top: 16rpx; }
+
+/* 头像展示 */
+.avatar-img { width: 100%; height: 100%; border-radius: 50%; }
+
+/* 资料编辑表单（sheet 插槽，页面作用域） */
+.profile-form { padding: 16rpx 44rpx 8rpx; display: flex; flex-direction: column; align-items: center; }
+.avatar-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 12rpx;
+  background: none; border: none; padding: 0; margin: 0; line-height: inherit;
+}
+.avatar-btn::after { border: none; }
+.avatar-btn-img,
+.avatar-btn-holder {
+  width: 140rpx; height: 140rpx; border-radius: 50%; overflow: hidden;
+  background: var(--surface-container-high);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-variant);
+}
+.avatar-btn-img { border: 4rpx solid var(--outline-variant); }
+.avatar-btn-tip { font-size: 22rpx; color: var(--on-surface-variant); }
+.nick-row {
+  width: 100%; display: flex; align-items: center; gap: 24rpx;
+  margin: 32rpx 0 8rpx; padding: 16rpx 24rpx;
+  background: var(--surface-container);
+  border-radius: var(--shape-md);
+}
+.nick-row .lab { font-size: 28rpx; color: var(--on-surface-variant); flex-shrink: 0; }
+.nick-input { flex: 1; font-size: 28rpx; color: var(--on-surface); }
+.s-ph { color: var(--on-surface-variant); opacity: .8; }
+.profile-form .sheet-btns { width: 100%; }
