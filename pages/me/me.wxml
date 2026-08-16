@@ -66,12 +66,25 @@
     <view style="height:40rpx" />
   </view>
 
-  <sheet visible="{{profileVisible}}" title="{{loginName ? '编辑资料' : '微信登录'}}" bind:close="onProfileClose">
+  <!-- 一键微信登录（身份即 openid，无需填写资料） -->
+  <sheet visible="{{loginVisible}}" title="微信登录" bind:close="onLoginClose">
+    <view class="login-form">
+      <view class="login-logo"><icon name="person" size="68" /></view>
+      <view class="login-tit">使用微信身份登录办公严选</view>
+      <view class="login-sub">无需填写资料，登录后可同步收藏与足迹</view>
+      <view class="sheet-btns">
+        <view class="btn btn-filled btn-block" hover-class="hv-sink" hover-stay-time="80" bindtap="onLoginConfirm">登录</view>
+      </view>
+    </view>
+  </sheet>
+
+  <!-- 编辑资料（登录后可选完善头像昵称） -->
+  <sheet visible="{{profileVisible}}" title="编辑资料" bind:close="onProfileClose">
     <view class="profile-form">
       <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
         <image wx:if="{{draftAvatar}}" class="avatar-btn-img" src="{{draftAvatar}}" mode="aspectFill" />
         <view wx:else class="avatar-btn-holder"><icon name="person" size="68" /></view>
-        <text class="avatar-btn-tip">{{loginName ? '点击更换头像' : '点击选择头像'}}</text>
+        <text class="avatar-btn-tip">点击选择头像</text>
       </button>
       <view class="nick-row">
         <text class="lab">昵称</text>
@@ -86,7 +99,7 @@
         />
       </view>
       <view class="sheet-btns">
-        <view class="btn btn-filled btn-block" hover-class="hv-sink" hover-stay-time="80" bindtap="onSaveProfile">{{loginName ? '保存' : '登录'}}</view>
+        <view class="btn btn-filled btn-block" hover-class="hv-sink" hover-stay-time="80" bindtap="onSaveProfile">保存</view>
       </view>
     </view>
   </sheet>

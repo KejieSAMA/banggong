@@ -74,6 +74,7 @@ miniprogram/
 ## 7. 导航约定
 
 - tab 页（home/mall/me）：原生导航栏 + 自定义 tabBar；`onShow` 里 `this.getTabBar().init(index)`
+- tab 页弹抽屉（登录/编辑/客服/排序/筛选）必须 `ui.toggleTabBar(page, true)` 隐藏 tabbar，关闭时恢复——框架的 tabbar 是独立层，页面内 fixed 元素 z-index 压不过，会遮挡抽屉底部
 - 二级页：一律 `wx.navigateTo`（自带原生返回键与转场；非 tab 页不渲染 custom-tab-bar，即自动隐藏底部导航）
 - 返回：`wx.navigateBack`；兜底 `fail` 时 `switchTab` 回首页（防止直达页无栈可退）
 
@@ -84,7 +85,9 @@ miniprogram/
 - 本地图片路径 `/images/xx.jpg` 由 api 层拼装；后端应返回完整 URL —— 页面不感知来源
 - **云同步（store.cloudPull）**：启动时拉取云端收藏/足迹/搜索历史/资料，与本地并集合并（离线新增不丢）后**仅回推本地新增项**；开启后本地变更即时 fire-and-forget 推送
 - 云端不可用（`code:1`/网络失败）自动保持本地模式，UI 行为不变；页面永远只读 store，不感知云端状态
-- **登录闭环**：身份标识由云托管网关注入的 `x-wx-openid` 承担；「登录」= 填写头像昵称（`open-type="chooseAvatar"` + `type="nickname"`，微信合规组件，getUserProfile 已废弃）
+- **登录闭环**：身份标识由云托管网关注入的 `x-wx-openid` 承担（getUserProfile 已废弃，不取微信昵称头像）
+  - 登录 = 一键确认（`store.login()`）：身份即 openid，无需填写资料，昵称默认「用户XXXXXX」（6 位随机）
+  - 头像昵称在登录后经「编辑资料」可选完善（`open-type="chooseAvatar"` + `type="nickname"`，微信合规组件）
   - 未登录：「我的」页显示「点击登录」；收藏操作经 `ui.loginGuard()` 弹原生引导 →「去登录」跳「我的」页自动打开登录 sheet；浏览/搜索对所有人开放
   - 退出登录：`store.logout()` 先推送云端档案重置（昵称还原「微信用户」）再清本地——否则下次 cloudPull 会按云端昵称自动恢复登录态
   - 头像统一经页面离屏 canvas 压缩为 128px JPEG data URL（约 <30KB）再上传，避免原图 base64 超限与同步大 payload

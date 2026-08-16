@@ -9,6 +9,7 @@ Page({
     avatar: '',
     favCount: 0,
     hisCount: 0,
+    loginVisible: false,
     profileVisible: false,
     draftName: '',
     draftAvatar: '',
@@ -29,7 +30,7 @@ Page({
     this.setData({ theme: theme.current() });
     this.refresh();
     /* 从收藏守卫「去登录」跳转过来时，直接打开登录 sheet */
-    if (ui.takeLoginIntent()) this.openProfile();
+    if (ui.takeLoginIntent()) this.openLogin();
   },
   onUnload() {
     store.off('fav', this._refresh);
@@ -50,8 +51,11 @@ Page({
 
   handleAct(e) {
     const act = e.currentTarget.dataset.act;
-    if (act === 'open-profile') this.openProfile();
-    else if (act === 'nav-favorites') wx.navigateTo({ url: '/pages/favorites/favorites' });
+    if (act === 'open-profile') {
+      /* 未登录 → 一键登录；已登录 → 编辑资料 */
+      if (store.get('login')) this.openProfile();
+      else this.openLogin();
+    } else if (act === 'nav-favorites') wx.navigateTo({ url: '/pages/favorites/favorites' });
     else if (act === 'nav-history') wx.navigateTo({ url: '/pages/history/history' });
     else if (act === 'toast-coupon') ui.toast(this, '优惠券功能仅作展示');
     else if (act === 'toast-todo') ui.toast(this, '功能开发中，敬请期待');
@@ -60,7 +64,23 @@ Page({
     else if (act === 'open-settings') wx.navigateTo({ url: '/pages/settings/settings' });
   },
 
-  /* —— 微信登录 / 资料编辑（头像 chooseAvatar + 昵称 nickname 输入框，微信合规组件） —— */
+  /* —— 一键微信登录（身份即 openid，默认昵称「用户XXXXXX」） —— */
+  openLogin() {
+    ui.toggleTabBar(this, true);
+    this.setData({ loginVisible: true });
+  },
+  onLoginClose() {
+    ui.toggleTabBar(this, false);
+    this.setData({ loginVisible: false });
+  },
+  onLoginConfirm() {
+    store.login();
+    ui.toggleTabBar(this, false);
+    this.setData({ loginVisible: false });
+    ui.toast(this, '登录成功，欢迎回来', 'check_circle-fill');
+  },
+
+  /* —— 编辑资料（登录后可选完善头像昵称；chooseAvatar + nickname，微信合规组件） —— */
   openProfile() {
     ui.toggleTabBar(this, true);
     this.setData({
@@ -125,11 +145,10 @@ Page({
       ui.toast(this, '请输入昵称');
       return;
     }
-    const wasLogin = !!this.data.loginName;
     store.setProfile(name, this.data.draftAvatar);
     ui.toggleTabBar(this, false);
     this.setData({ profileVisible: false });
-    ui.toast(this, wasLogin ? '资料已保存' : '登录成功，欢迎回来', 'check_circle-fill');
+    ui.toast(this, '资料已保存', 'check_circle-fill');
   },
 
   /* 客服 sheet */

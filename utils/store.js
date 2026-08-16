@@ -142,6 +142,11 @@ module.exports = {
     persist(); emit('login');
     push(() => api.saveProfile({ nickname: name, avatar }), 'profile');
   },
+  /* 一键微信登录：身份即 openid，无需填写资料；昵称默认「用户XXXXXX」（6 位随机） */
+  login() {
+    const suffix = (Math.random().toString(36).slice(2, 8) + '000000').slice(0, 6);
+    this.setProfile('用户' + suffix, '');
+  },
   /* 退出登录：同步重置云端档案，否则下次 cloudPull 会按云端昵称恢复登录态 */
   logout() {
     push(() => api.saveProfile({ nickname: '微信用户', avatar: '' }), 'profile-reset');

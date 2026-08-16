@@ -94,3 +94,18 @@
   position: fixed; left: -9999px; top: -9999px;
   width: 128px; height: 128px;
 }
+
+/* 一键登录 sheet */
+.login-form {
+  padding: 24rpx 44rpx 8rpx;
+  display: flex; flex-direction: column; align-items: center;
+}
+.login-logo {
+  width: 140rpx; height: 140rpx; border-radius: 44rpx;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  display: flex; align-items: center; justify-content: center;
+}
+.login-tit { margin-top: 28rpx; font-size: 32rpx; font-weight: 700; color: var(--on-surface); }
+.login-sub { margin-top: 12rpx; font-size: 24rpx; color: var(--on-surface-variant); }
+.login-form .sheet-btns { width: 100%; margin-top: 36rpx; }
