@@ -7,6 +7,7 @@ const { fmtPrice, fmtSold } = require('../../utils/format');
 Page({
   data: {
     theme: 'light', list: [], countText: '',
+    editing: false,
     clearVisible: false,
     clearActions: [{ label: '取消' }, { label: '清空', cls: 'primary' }],
   },
@@ -42,6 +43,14 @@ Page({
   },
 
   onOpen(e) { wx.navigateTo({ url: '/pages/product/product?id=' + e.currentTarget.dataset.id }); },
+
+  /* 编辑模式：单条删除 */
+  onToggleEdit() { this.setData({ editing: !this.data.editing }); },
+  onRemove(e) {
+    store.removeHistory(e.currentTarget.dataset.id);
+    ui.toast(this, '已删除');
+    if (this.data.list.length <= 1) this.setData({ editing: false }); // 删空自动退出编辑
+  },
 
   onOpenClear() { this.setData({ clearVisible: true }); },
   onClearClose() { this.setData({ clearVisible: false }); },

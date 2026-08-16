@@ -45,7 +45,7 @@
 .me-stat .t { font-size: 23rpx; opacity: .85; }
 .hv-stat { background: rgba(255,255,255,.1); }
 
-.me-grid { display: grid; grid-template-columns: repeat(4, 1fr); padding: 32rpx 16rpx 8rpx; }
+.me-grid { display: grid; grid-template-columns: repeat(2, 1fr); padding: 32rpx 16rpx 8rpx; }
 .me-g-it {
   display: flex; flex-direction: column; align-items: center; gap: 16rpx;
   padding: 16rpx 0; border-radius: var(--shape-md);

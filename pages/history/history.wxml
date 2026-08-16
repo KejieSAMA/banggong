@@ -3,8 +3,13 @@
     <block wx:if="{{list.length}}">
       <view class="list-bar">
         <text>{{countText}}</text>
-        <view class="lb-btn" hover-class="hv-cell" hover-stay-time="80" bindtap="onOpenClear">
-          <icon name="delete" size="32" />清空足迹
+        <view class="lb-btns">
+          <view class="lb-btn" hover-class="hv-cell" hover-stay-time="80" bindtap="onToggleEdit">
+            {{editing ? '完成' : '编辑'}}
+          </view>
+          <view class="lb-btn" hover-class="hv-cell" hover-stay-time="80" bindtap="onOpenClear">
+            <icon name="delete" size="32" />清空足迹
+          </view>
         </view>
       </view>
       <view
@@ -23,6 +28,7 @@
           <text class="sold">{{item.brandLine}}</text>
           <view class="meta-row"><view class="price"><text class="num">{{item.priceText}}</text></view></view>
         </view>
+        <view wx:if="{{editing}}" class="row-del" hover-class="hv-sink" hover-stay-time="80" data-id="{{item.id}}" catchtap="onRemove">删除</view>
       </view>
     </block>
     <empty-state wx:else icon="history" text="暂无浏览足迹" btnText="去逛逛" bind:action="onGoMall" />

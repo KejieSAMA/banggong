@@ -58,8 +58,6 @@ Page({
       else this.openLogin();
     } else if (act === 'nav-favorites') wx.navigateTo({ url: '/pages/favorites/favorites' });
     else if (act === 'nav-history') wx.navigateTo({ url: '/pages/history/history' });
-    else if (act === 'toast-coupon') ui.toast(this, '优惠券功能仅作展示');
-    else if (act === 'toast-todo') ui.toast(this, '功能开发中，敬请期待');
     else if (act === 'open-service') { ui.toggleTabBar(this, true); this.setData({ serviceVisible: true }); }
     else if (act === 'toast-feedback') ui.toast(this, '感谢你的反馈！');
     else if (act === 'open-settings') wx.navigateTo({ url: '/pages/settings/settings' });

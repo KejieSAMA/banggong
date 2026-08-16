@@ -120,6 +120,7 @@ module.exports = {
   saveFavorites: ids => remote('/favorites', { method: 'POST', data: { ids } }),
   getHistory: () => remote('/history'),
   pushHistory: id => remote('/history', { method: 'POST', data: { id } }),
+  removeHistory: id => remote('/history/' + id, { method: 'DELETE' }),
   clearHistory: () => remote('/history', { method: 'DELETE' }),
   getSearchHistory: () => remote('/search-history'),
   pushSearch: q => remote('/search-history', { method: 'POST', data: { q } }),

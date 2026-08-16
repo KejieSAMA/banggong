@@ -1,2 +1,12 @@
 /* 足迹页（复用 app.wxss 的 list-row 系列） */
 .meta-row { margin-top: 10rpx; display: flex; align-items: baseline; }
+.lb-btns { display: flex; align-items: center; gap: 28rpx; }
+/* 编辑模式：行内删除按钮 */
+.row-del {
+  flex-shrink: 0; align-self: center;
+  margin-left: 16rpx; padding: 10rpx 24rpx;
+  border-radius: 999rpx;
+  background: var(--surface-container-high);
+  color: var(--error);
+  font-size: 22rpx; font-weight: 600;
+}
