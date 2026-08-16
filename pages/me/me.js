@@ -10,6 +10,7 @@ Page({
     favCount: 0,
     hisCount: 0,
     loginVisible: false,
+    agree: false,
     profileVisible: false,
     draftName: '',
     draftAvatar: '',
@@ -74,11 +75,19 @@ Page({
     this.setData({ loginVisible: false });
   },
   onLoginConfirm() {
+    if (!this.data.agree) {
+      ui.toast(this, '请先勾选同意用户协议与隐私政策');
+      return;
+    }
     store.login();
     ui.toggleTabBar(this, false);
     this.setData({ loginVisible: false });
     ui.toast(this, '登录成功，欢迎回来', 'check_circle-fill');
   },
+
+  /* 隐私勾选：整行点击切换；协议链接点击看文档（catchtap 阻止冒泡切换） */
+  onPrivacyToggle() { this.setData({ agree: !this.data.agree }); },
+  onPrivacyDoc() { ui.toast(this, '文档仅作界面演示'); },
 
   /* —— 编辑资料（登录后可选完善头像昵称；chooseAvatar + nickname，微信合规组件） —— */
   openProfile() {

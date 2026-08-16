@@ -107,5 +107,20 @@
   display: flex; align-items: center; justify-content: center;
 }
 .login-tit { margin-top: 28rpx; font-size: 32rpx; font-weight: 700; color: var(--on-surface); }
-.login-sub { margin-top: 12rpx; font-size: 24rpx; color: var(--on-surface-variant); }
 .login-form .sheet-btns { width: 100%; margin-top: 36rpx; }
+
+/* 隐私协议勾选行 */
+.privacy-row {
+  display: flex; align-items: center; gap: 12rpx;
+  margin-top: 28rpx; padding-bottom: 8rpx;
+}
+.privacy-check {
+  width: 34rpx; height: 34rpx; border-radius: 8rpx;
+  border: 2rpx solid var(--outline);
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; flex-shrink: 0;
+}
+.privacy-check.on { background: var(--primary); border-color: var(--primary); }
+.privacy-txt { font-size: 22rpx; color: var(--on-surface-variant); line-height: 1.5; }
+.privacy-link { color: var(--primary); }
