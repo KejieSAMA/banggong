@@ -8,12 +8,12 @@
         </view>
         <view class="me-user-info">
           <view class="me-name">
-            <text>{{loginName || '点击设置资料'}}</text>
+            <text>{{loginName || '点击登录'}}</text>
             <icon name="chevron_right" size="36" />
           </view>
           <view class="me-vip">
             <icon name="redeem" size="28" />
-            <text>{{loginName ? '普通会员 · 积分 320' : '设置昵称头像，多端同步收藏'}}</text>
+            <text>{{loginName ? '普通会员 · 积分 320' : '登录后同步收藏与足迹'}}</text>
           </view>
         </view>
       </view>
@@ -66,12 +66,12 @@
     <view style="height:40rpx" />
   </view>
 
-  <sheet visible="{{profileVisible}}" title="编辑资料" bind:close="onProfileClose">
+  <sheet visible="{{profileVisible}}" title="{{loginName ? '编辑资料' : '微信登录'}}" bind:close="onProfileClose">
     <view class="profile-form">
       <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
         <image wx:if="{{draftAvatar}}" class="avatar-btn-img" src="{{draftAvatar}}" mode="aspectFill" />
         <view wx:else class="avatar-btn-holder"><icon name="person" size="68" /></view>
-        <text class="avatar-btn-tip">点击更换头像</text>
+        <text class="avatar-btn-tip">{{loginName ? '点击更换头像' : '点击选择头像'}}</text>
       </button>
       <view class="nick-row">
         <text class="lab">昵称</text>
@@ -86,10 +86,13 @@
         />
       </view>
       <view class="sheet-btns">
-        <view class="btn btn-filled btn-block" hover-class="hv-sink" hover-stay-time="80" bindtap="onSaveProfile">保存</view>
+        <view class="btn btn-filled btn-block" hover-class="hv-sink" hover-stay-time="80" bindtap="onSaveProfile">{{loginName ? '保存' : '登录'}}</view>
       </view>
     </view>
   </sheet>
+
+  <!-- 头像压缩画布（离屏） -->
+  <canvas type="2d" id="avatarCanvas" class="avatar-canvas" />
 
   <sheet visible="{{serviceVisible}}" title="联系客服" bind:close="onServiceClose">
     <view class="sheet-row">

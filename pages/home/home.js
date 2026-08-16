@@ -39,6 +39,7 @@ Page({
   onBannerChange(e) { this.setData({ bannerIdx: e.detail.current }); },
 
   onCardFav(e) {
+    if (!ui.loginGuard()) return;
     const added = store.toggleFav(e.detail.id);
     ui.toast(this, added ? '已加入收藏' : '已取消收藏', added ? 'favorite-fill' : '');
   },

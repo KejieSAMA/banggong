@@ -67,10 +67,13 @@ function cloudPull() {
     persist();
     cloud = true;
     ['login', 'fav', 'history', 'search'].forEach(emit);
-    // 合并结果回推云端，保证多端一致
-    push(() => api.saveFavorites(state.favorites), 'favorites-merge');
-    state.history.forEach(id => push(() => api.pushHistory(id), 'history-merge'));
-    state.searchHistory.forEach(q => push(() => api.pushSearch(q), 'search-merge'));
+    /* 合并结果回推云端（仅本地新增项，避免每次启动全量回推），保证多端一致 */
+    const onlyLocal = (merged, cloudList) => merged.filter(x => (cloudList || []).indexOf(x) < 0);
+    if (onlyLocal(state.favorites, cloudFav).length) {
+      push(() => api.saveFavorites(state.favorites), 'favorites-merge');
+    }
+    onlyLocal(state.history, cloudHis).forEach(id => push(() => api.pushHistory(id), 'history-merge'));
+    onlyLocal(state.searchHistory, cloudKwd).forEach(q => push(() => api.pushSearch(q), 'search-merge'));
     console.log('[store] 云同步已开启');
     return true;
   }).catch(e => {
@@ -139,5 +142,10 @@ module.exports = {
     persist(); emit('login');
     push(() => api.saveProfile({ nickname: name, avatar }), 'profile');
   },
-  logout() { state.login = null; persist(); emit('login'); },
+  /* 退出登录：同步重置云端档案，否则下次 cloudPull 会按云端昵称恢复登录态 */
+  logout() {
+    push(() => api.saveProfile({ nickname: '微信用户', avatar: '' }), 'profile-reset');
+    state.login = null;
+    persist(); emit('login');
+  },
 };

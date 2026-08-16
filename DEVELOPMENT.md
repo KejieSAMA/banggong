@@ -82,9 +82,13 @@ miniprogram/
 - `config/env.js` 三模式：`BASE_URL` 非空直连；否则 `CLOUD.env` 非空走 `wx.cloud.callContainer`（云托管免鉴权，自动携带 openid）；均失败回落本地数据
 - 接口：`GET /api/banners | /api/categories | /api/products | /api/products/:id | /api/hot-keywords`（后端仓库：banggong-koa）
 - 本地图片路径 `/images/xx.jpg` 由 api 层拼装；后端应返回完整 URL —— 页面不感知来源
-- **云同步（store.cloudPull）**：启动时拉取云端收藏/足迹/搜索历史/资料，与本地并集合并（离线新增不丢）后回推；开启后本地变更即时 fire-and-forget 推送
+- **云同步（store.cloudPull）**：启动时拉取云端收藏/足迹/搜索历史/资料，与本地并集合并（离线新增不丢）后**仅回推本地新增项**；开启后本地变更即时 fire-and-forget 推送
 - 云端不可用（`code:1`/网络失败）自动保持本地模式，UI 行为不变；页面永远只读 store，不感知云端状态
-- 用户身份由云托管网关注入的 `x-wx-openid` 承担，无显式登录接口；资料编辑用 `open-type="chooseAvatar"` + `type="nickname"`（微信合规组件）
+- **登录闭环**：身份标识由云托管网关注入的 `x-wx-openid` 承担；「登录」= 填写头像昵称（`open-type="chooseAvatar"` + `type="nickname"`，微信合规组件，getUserProfile 已废弃）
+  - 未登录：「我的」页显示「点击登录」；收藏操作经 `ui.loginGuard()` 弹原生引导 →「去登录」跳「我的」页自动打开登录 sheet；浏览/搜索对所有人开放
+  - 退出登录：`store.logout()` 先推送云端档案重置（昵称还原「微信用户」）再清本地——否则下次 cloudPull 会按云端昵称自动恢复登录态
+  - 头像统一经页面离屏 canvas 压缩为 128px JPEG data URL（约 <30KB）再上传，避免原图 base64 超限与同步大 payload
+- 后端安全：用户接口仅信任携带 `x-wx-source` 网关头的请求（公网直访可伪造 `x-wx-openid`，缺 `x-wx-source` 一律 code:1）；收藏多端并发为 last-write-wins（展示型应用可接受）
 
 ## 9. 工程杂项
 

@@ -88,3 +88,9 @@
 .nick-input { flex: 1; font-size: 28rpx; color: var(--on-surface); }
 .s-ph { color: var(--on-surface-variant); opacity: .8; }
 .profile-form .sheet-btns { width: 100%; }
+
+/* 头像压缩离屏画布：不占版面，仅提供 canvas 节点 */
+.avatar-canvas {
+  position: fixed; left: -9999px; top: -9999px;
+  width: 128px; height: 128px;
+}

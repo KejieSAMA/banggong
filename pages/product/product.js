@@ -63,6 +63,7 @@ Page({
   onGallery(e) { this.setData({ imgIdx: e.detail.current }); },
 
   onCardFav(e) {
+    if (!ui.loginGuard()) return;
     const added = store.toggleFav(e.detail.id);
     ui.toast(this, added ? '已加入收藏' : '已取消收藏', added ? 'favorite-fill' : '');
   },
@@ -72,6 +73,7 @@ Page({
     if (act === 'go-mall') wx.switchTab({ url: '/pages/mall/mall' });
     else if (act === 'open-product') wx.navigateTo({ url: '/pages/product/product?id=' + e.currentTarget.dataset.id });
     else if (act === 'toggle-fav') {
+      if (!ui.loginGuard()) return;
       const added = store.toggleFav(this.data.p.id);
       ui.toast(this, added ? '已加入收藏' : '已取消收藏', added ? 'favorite-fill' : '');
     } else if (act === 'add-list') ui.toast(this, '原型演示：仅商品展示，未接入下单');
