@@ -27,11 +27,6 @@
       </view>
     </view>
 
-    <view class="me-grid">
-      <view class="me-g-it" hover-class="hv-cell" hover-stay-time="80" data-act="nav-favorites" bindtap="handleAct"><icon name="favorite" size="50" /><text>我的收藏</text></view>
-      <view class="me-g-it" hover-class="hv-cell" hover-stay-time="80" data-act="nav-history" bindtap="handleAct"><icon name="history" size="50" /><text>浏览足迹</text></view>
-    </view>
-
     <view class="me-srv-hd">我的服务</view>
     <view class="cell-group srv-group">
       <view class="cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-todo" bindtap="handleAct">
