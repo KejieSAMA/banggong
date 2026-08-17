@@ -12,8 +12,8 @@
             <icon name="chevron_right" size="36" />
           </view>
           <view class="me-vip">
-            <icon name="redeem" size="28" />
-            <text>{{loginName ? '普通会员 · 积分 320' : '登录后同步收藏与足迹'}}</text>
+            <icon name="refresh" size="28" />
+            <text>{{loginName ? '已开启收藏与足迹多端同步' : '登录后同步收藏与足迹'}}</text>
           </view>
         </view>
       </view>
