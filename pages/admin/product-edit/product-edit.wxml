@@ -1,0 +1,86 @@
+<view class="page {{theme}}">
+  <view class="page-body">
+    <view class="fm-group">
+      <view class="fm-label">商品图片</view>
+      <view class="fm-img" hover-class="hv-sink" hover-stay-time="80" bindtap="onPickImage">
+        <image wx:if="{{img}}" class="fm-img-in" src="{{img}}" mode="aspectFill" />
+        <view wx:else class="fm-img-holder"><icon name="inventory_2" size="68" /><text>{{uploading ? '上传中…' : '点击选图'}}</text></view>
+        <view wx:if="{{uploading}}" class="fm-img-mask">压缩上传中…</view>
+      </view>
+    </view>
+
+    <view class="fm-group">
+      <view class="fm-row">
+        <text class="fm-label">名称</text>
+        <input class="fm-input" value="{{name}}" data-f="name" bindinput="onField" placeholder="商品名称" placeholder-class="s-ph" />
+      </view>
+      <view class="fm-row">
+        <text class="fm-label">品牌</text>
+        <input class="fm-input" value="{{brand}}" data-f="brand" bindinput="onField" placeholder="选填" placeholder-class="s-ph" />
+      </view>
+      <view class="fm-row">
+        <text class="fm-label">分类</text>
+        <picker class="fm-input" range="{{catNames}}" value="{{catIdx}}" bindchange="onCatChange">
+          <view class="fm-picker">{{catNames[catIdx] || '请选择'}}</view>
+        </picker>
+      </view>
+      <view class="fm-row">
+        <text class="fm-label">二级分类</text>
+        <picker class="fm-input" range="{{subNames}}" value="{{subIdx}}" bindchange="onSubChange" disabled="{{!subNames.length}}">
+          <view class="fm-picker">{{subNames[subIdx] || '请先选分类'}}</view>
+        </picker>
+      </view>
+      <view class="fm-row">
+        <text class="fm-label">价格 ¥</text>
+        <input class="fm-input" type="digit" value="{{price}}" data-f="price" bindinput="onField" placeholder="0.00" placeholder-class="s-ph" />
+      </view>
+      <view class="fm-row">
+        <text class="fm-label">原价 ¥</text>
+        <input class="fm-input" type="digit" value="{{orig}}" data-f="orig" bindinput="onField" placeholder="选填（划线价）" placeholder-class="s-ph" />
+      </view>
+      <view class="fm-row">
+        <text class="fm-label">标签</text>
+        <picker class="fm-input" range="{{tagLabels}}" value="{{tagIdx}}" bindchange="onTagChange">
+          <view class="fm-picker">{{tagLabels[tagIdx]}}</view>
+        </picker>
+      </view>
+      <view class="fm-row">
+        <text class="fm-label">评分</text>
+        <input class="fm-input" type="digit" value="{{rating}}" data-f="rating" bindinput="onField" placeholder="5.0" placeholder-class="s-ph" />
+      </view>
+      <view class="fm-row">
+        <text class="fm-label">已售</text>
+        <input class="fm-input" type="number" value="{{sold}}" data-f="sold" bindinput="onField" placeholder="0" placeholder-class="s-ph" />
+      </view>
+    </view>
+
+    <view class="fm-group">
+      <view class="fm-label">简介</view>
+      <textarea class="fm-textarea" value="{{desc}}" data-f="desc" bindinput="onField" maxlength="2000"
+        placeholder="商品简介（选填）" placeholder-class="s-ph" />
+    </view>
+
+    <view class="fm-group">
+      <view class="fm-specs-hd">
+        <text class="fm-label">规格参数</text>
+        <view class="fm-spec-add" hover-class="hv-cell" hover-stay-time="80" bindtap="onSpecAdd">+ 添加一项</view>
+      </view>
+      <view wx:for="{{specs}}" wx:key="index" class="fm-spec-row">
+        <input class="fm-spec-k" value="{{item.k}}" data-i="{{index}}" bindinput="onSpecK" placeholder="名称" placeholder-class="s-ph" />
+        <input class="fm-spec-v" value="{{item.v}}" data-i="{{index}}" bindinput="onSpecV" placeholder="值" placeholder-class="s-ph" />
+        <view class="fm-spec-del" hover-class="hv-cell" hover-stay-time="80" data-i="{{index}}" bindtap="onSpecRemove">
+          <icon name="close" size="28" />
+        </view>
+      </view>
+    </view>
+
+    <view class="fm-foot">
+      <view class="btn btn-filled btn-block {{saving ? 'disabled' : ''}}" hover-class="hv-sink" hover-stay-time="80" bindtap="onSave">
+        {{saving ? '保存中…' : (isEdit ? '保存修改' : '创建商品')}}
+      </view>
+    </view>
+  </view>
+
+  <canvas type="2d" id="editCanvas" class="edit-canvas" />
+  <toast id="toast" />
+</view>

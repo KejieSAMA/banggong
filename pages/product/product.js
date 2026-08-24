@@ -19,8 +19,18 @@ Page({
   },
 
   onLoad(options) {
-    const id = options.id || '';
-    api.getProduct(id).then(p => {
+    const id = (options && options.id) || '';
+    this._pid = id;
+    this.load();
+    this._onFav = () => this.setData({ favOn: store.isFav(id) });
+    this._onTheme = () => this.setData({ theme: theme.current() });
+    this._onCatalog = () => this.load();
+    store.on('fav', this._onFav);
+    store.on('theme', this._onTheme);
+    store.on('catalog', this._onCatalog);
+  },
+  load() {
+    api.getProduct(this._pid).then(p => {
       if (!p) {
         this.setData({ notFound: true });
         return;
@@ -28,10 +38,6 @@ Page({
       store.addHistory(p.id);
       api.getProducts().then(all => this.build(p, all));
     });
-    this._onFav = () => this.setData({ favOn: store.isFav(id) });
-    this._onTheme = () => this.setData({ theme: theme.current() });
-    store.on('fav', this._onFav);
-    store.on('theme', this._onTheme);
   },
   onShow() {
     theme.syncNav();
@@ -40,6 +46,7 @@ Page({
   onUnload() {
     store.off('fav', this._onFav);
     store.off('theme', this._onTheme);
+    store.off('catalog', this._onCatalog);
   },
 
   build(p, all) {

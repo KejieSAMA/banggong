@@ -10,8 +10,10 @@ Page({
     this.refresh();
     this._onFav = () => this.syncFav();
     this._onTheme = () => this.setData({ theme: theme.current() });
+    this._onCatalog = () => this.refresh();
     store.on('fav', this._onFav);
     store.on('theme', this._onTheme);
+    store.on('catalog', this._onCatalog);
   },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().init(0);
@@ -21,6 +23,7 @@ Page({
   onUnload() {
     store.off('fav', this._onFav);
     store.off('theme', this._onTheme);
+    store.off('catalog', this._onCatalog);
   },
 
   refresh() {

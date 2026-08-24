@@ -1,0 +1,67 @@
+/* 商品管理列表（二级页，无 tabbar） */
+.ad-bar {
+  display: flex; align-items: center; gap: 20rpx;
+  padding: 24rpx 24rpx 8rpx;
+}
+.ad-search {
+  flex: 1; display: flex; align-items: center; gap: 12rpx;
+  padding: 16rpx 24rpx;
+  background: var(--surface-container);
+  border-radius: 999rpx;
+  color: var(--on-surface-variant);
+}
+.ad-search-input { flex: 1; font-size: 26rpx; color: var(--on-surface); }
+.s-ph { color: var(--on-surface-variant); opacity: .8; }
+.ad-add {
+  display: flex; align-items: center; gap: 8rpx;
+  padding: 16rpx 28rpx; border-radius: 999rpx;
+  background: var(--primary); color: var(--on-primary);
+  font-size: 26rpx; font-weight: 600; flex-shrink: 0;
+}
+.ad-count { font-size: 22rpx; color: var(--on-surface-variant); padding: 12rpx 32rpx 4rpx; }
+
+.ad-row {
+  display: flex; gap: 20rpx;
+  margin: 16rpx 24rpx 0; padding: 20rpx;
+  background: var(--surface-container-low);
+  border-radius: var(--shape-lg);
+}
+.ad-thumb {
+  position: relative; width: 152rpx; height: 152rpx;
+  border-radius: var(--shape-md); overflow: hidden;
+  background: var(--surface-container-high); flex-shrink: 0;
+}
+.ad-thumb image { width: 100%; height: 100%; }
+.ad-off {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.55); color: #fff;
+  font-size: 20rpx; text-align: center; padding: 4rpx 0;
+}
+.ad-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ad-name {
+  font-size: 28rpx; font-weight: 600; color: var(--on-surface);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  display: flex; align-items: center; gap: 10rpx;
+}
+.ad-tag {
+  flex-shrink: 0; font-size: 18rpx; font-weight: 700; line-height: 1;
+  padding: 5rpx 10rpx; border-radius: 8rpx;
+  background: var(--secondary-container); color: var(--on-secondary-container);
+}
+.ad-sub {
+  font-size: 22rpx; color: var(--on-surface-variant); margin-top: 6rpx;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ad-meta {
+  margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12rpx;
+}
+.ad-price { font-size: 30rpx; font-weight: 800; color: var(--price, #C8393E); }
+.ad-acts { display: flex; gap: 14rpx; }
+.ad-mini {
+  padding: 8rpx 22rpx; border-radius: 999rpx;
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+  font-size: 22rpx; font-weight: 600;
+}
+.ad-mini.on { background: var(--secondary-container); color: var(--on-secondary-container); }
+.ad-mini.danger { background: var(--surface-container-high); color: var(--error, #B3261E); }

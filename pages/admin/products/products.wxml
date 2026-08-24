@@ -1,0 +1,55 @@
+<view class="page {{theme}}">
+  <view class="page-body">
+    <view class="ad-bar">
+      <view class="ad-search">
+        <icon name="search" size="36" />
+        <input class="ad-search-input" placeholder="搜索商品名称 / ID" placeholder-class="s-ph"
+          value="{{kw}}" bindinput="onKw" confirm-type="search" />
+      </view>
+      <view class="ad-add" hover-class="hv-sink" hover-stay-time="80" bindtap="onCreate">
+        <icon name="edit" size="36" />新增
+      </view>
+    </view>
+    <view wx:if="{{list.length}}" class="ad-count">{{countText}}</view>
+
+    <block wx:if="{{list.length}}">
+      <view wx:for="{{list}}" wx:key="id" class="ad-row">
+        <view class="ad-thumb">
+          <image src="{{item.img}}" mode="aspectFill" lazy-load />
+          <view wx:if="{{!item.online}}" class="ad-off">已下架</view>
+        </view>
+        <view class="ad-info">
+          <view class="ad-name">
+            {{item.name}}
+            <text wx:if="{{item.tagText}}" class="ad-tag">{{item.tagText}}</text>
+          </view>
+          <text class="ad-sub">{{item.catLine}}</text>
+          <view class="ad-meta">
+            <text class="ad-price">{{item.priceText}}</text>
+            <view class="ad-acts">
+              <view class="ad-mini {{item.online ? 'on' : ''}}" hover-class="hv-cell" hover-stay-time="80"
+                data-id="{{item.id}}" catchtap="onToggleOnline">{{item.online ? '下架' : '上架'}}</view>
+              <view class="ad-mini" hover-class="hv-cell" hover-stay-time="80"
+                data-id="{{item.id}}" catchtap="onEdit">编辑</view>
+              <view class="ad-mini danger" hover-class="hv-cell" hover-stay-time="80"
+                data-id="{{item.id}}" catchtap="onOpenDelete">删除</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view style="height:40rpx" />
+    </block>
+
+    <empty-state wx:elif="{{!loading}}" icon="inventory_2" text="暂无商品，点击右上角新增" btnText="新增商品" bind:action="onCreate" />
+  </view>
+
+  <dialog
+    visible="{{delVisible}}"
+    title="删除商品"
+    content="删除后前台立即不可见且不可恢复，确定删除该商品吗？"
+    actions="{{delActions}}"
+    bind:close="onDeleteClose"
+    bind:action="onDeleteAction"
+  />
+  <toast id="toast" />
+</view>

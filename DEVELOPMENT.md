@@ -94,6 +94,15 @@ miniprogram/
   - 头像统一经页面离屏 canvas 压缩为 128px JPEG data URL（约 <30KB）再上传，避免原图 base64 超限与同步大 payload
 - 后端安全：用户接口仅信任携带 `x-wx-source` 网关头的请求（公网直访可伪造 `x-wx-openid`，缺 `x-wx-source` 一律 code:1）；收藏多端并发为 last-write-wins（展示型应用可接受）
 
+## 8.5 商品管理（管理员隐藏入口）
+
+- 管理员识别：后端环境变量 `ADMIN_OPENIDS`（openid 白名单）；`GET /api/user/profile` 返回 `admin` 标记，cloudPull 存入 `store`（不持久化），「我的」页仅管理员显示「商品管理」cell
+- openid 获取：设置页「我的ID」行点按复制（登录后显示）
+- 管理页：`pages/admin/products`（列表/搜索/上下架/删除）+ `pages/admin/product-edit`（新建/编辑表单）
+- 商品图片：相册选图 → 页面离屏 canvas 压缩（最长边 800px JPEG）→ `api.uploadImage()`：先取服务端签名凭证（`GET /api/admin/upload-token`）再 `wx.uploadFile` 直传阿里云 OSS，商品 `img` 存完整 URL；`AK/SK` 只在后端环境变量，绝不出现在小程序代码
+- 目录刷新：管理端任何变更后 `api.clearCatalogCache()` + `store.set('catalog', Date.now())` 广播；home/mall/category/search/favorites/history/product 七页订阅 `catalog` 事件重拉
+- 上下架：商品 `online` 字段（默认 true），公开目录接口自动过滤下架商品
+
 ## 9. 工程杂项
 
 - 提交信息约定式：`feat:` / `fix:` / `style:` / `refactor:` / `chore:`

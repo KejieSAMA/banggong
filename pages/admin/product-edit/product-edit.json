@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "编辑商品",
+  "usingComponents": {
+    "icon": "../../../components/icon/icon",
+    "toast": "../../../components/toast/toast"
+  }
+}

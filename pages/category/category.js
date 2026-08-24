@@ -13,22 +13,30 @@ Page({
   },
 
   onLoad(options) {
-    const id = options.id || '';
+    this._catId = (options && options.id) || '';
+    this.load();
+    this._onTheme = () => this.setData({ theme: theme.current() });
+    this._onCatalog = () => this.load();
+    store.on('theme', this._onTheme);
+    store.on('catalog', this._onCatalog);
+  },
+  load() {
     Promise.all([api.getCategories(), api.getProducts()]).then(res => {
-      const cat = res[0].find(c => c.id === id) || res[0][0];
+      const cat = res[0].find(c => c.id === this._catId) || res[0][0];
       this._all = res[1];
       wx.setNavigationBarTitle({ title: cat.name });
       this.setData({ cat, subs: ['全部'].concat(cat.subs) });
       this.render();
     });
-    this._onTheme = () => this.setData({ theme: theme.current() });
-    store.on('theme', this._onTheme);
   },
   onShow() {
     theme.syncNav();
     this.setData({ theme: theme.current() });
   },
-  onUnload() { store.off('theme', this._onTheme); },
+  onUnload() {
+    store.off('theme', this._onTheme);
+    store.off('catalog', this._onCatalog);
+  },
 
   render() {
     const { cat, activeSub } = this.data;

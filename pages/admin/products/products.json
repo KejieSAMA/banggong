@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "商品管理",
+  "usingComponents": {
+    "icon": "../../../components/icon/icon",
+    "empty-state": "../../../components/empty-state/empty-state",
+    "dialog": "../../../components/dialog/dialog",
+    "toast": "../../../components/toast/toast"
+  }
+}

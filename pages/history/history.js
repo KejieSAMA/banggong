@@ -13,11 +13,16 @@ Page({
   },
 
   onLoad() {
-    api.getProducts().then(all => { this._all = all; this.render(); });
+    this.load();
     this._onHistory = () => this.render();
     this._onTheme = () => this.setData({ theme: theme.current() });
+    this._onCatalog = () => this.load();
     store.on('history', this._onHistory);
     store.on('theme', this._onTheme);
+    store.on('catalog', this._onCatalog);
+  },
+  load() {
+    api.getProducts().then(all => { this._all = all; this.render(); });
   },
   onShow() {
     theme.syncNav();
@@ -26,6 +31,7 @@ Page({
   onUnload() {
     store.off('history', this._onHistory);
     store.off('theme', this._onTheme);
+    store.off('catalog', this._onCatalog);
   },
 
   render() {

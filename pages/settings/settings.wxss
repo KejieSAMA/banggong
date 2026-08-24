@@ -17,3 +17,6 @@
 .about-name { font-size: 34rpx; font-weight: 700; color: var(--on-surface); }
 .about-ver { font-size: 24rpx; color: var(--on-surface-variant); }
 .sub-inline { font-size: 24rpx; color: var(--on-surface-variant); }
+
+/* 我的ID（openid 较长，小号字+省略号） */
+.id-val { font-size: 22rpx; max-width: 360rpx; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

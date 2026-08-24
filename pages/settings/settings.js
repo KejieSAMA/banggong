@@ -17,13 +17,13 @@ Page({
 
   onLoad() {
     this._onTheme = () => this.setData({ theme: theme.current() });
-    this._onLogin = () => this.setData({ isLogin: !!store.get('login') });
+    this._onLogin = () => this.setData({ isLogin: !!store.get('login'), openid: store.get('openid') || '' });
     store.on('theme', this._onTheme);
     store.on('login', this._onLogin);
   },
   onShow() {
     theme.syncNav();
-    this.setData({ theme: theme.current(), isLogin: !!store.get('login') });
+    this.setData({ theme: theme.current(), isLogin: !!store.get('login'), openid: store.get('openid') || '' });
   },
   onUnload() {
     store.off('theme', this._onTheme);
@@ -37,7 +37,18 @@ Page({
     else if (act === 'clear-cache') this.setData({ clearVisible: true });
     else if (act === 'about') this.setData({ aboutVisible: true });
     else if (act === 'toast-doc') ui.toast(this, '文档仅作界面演示');
+    else if (act === 'copy-id') this.onCopyId();
     else if (act === 'logout') this.setData({ logoutVisible: true });
+  },
+
+  /* 我的ID：复制 openid（配置管理员白名单 ADMIN_OPENIDS 用） */
+  onCopyId() {
+    const id = store.get('openid');
+    if (!id) { ui.toast(this, '登录后可查看'); return; }
+    wx.setClipboardData({
+      data: id,
+      success: () => ui.toast(this, 'ID 已复制', 'check_circle-fill'),
+    });
   },
 
   onNotify() {

@@ -47,6 +47,7 @@ Page({
       avatar: login && login.avatar ? login.avatar : '',
       favCount: store.get('favorites').length,
       hisCount: store.get('history').length,
+      admin: !!store.get('admin'),
     });
   },
 
@@ -60,6 +61,7 @@ Page({
     else if (act === 'nav-history') wx.navigateTo({ url: '/pages/history/history' });
     else if (act === 'open-service') { ui.toggleTabBar(this, true); this.setData({ serviceVisible: true }); }
     else if (act === 'toast-feedback') ui.toast(this, '感谢你的反馈！');
+    else if (act === 'open-admin') wx.navigateTo({ url: '/pages/admin/products/products' });
     else if (act === 'open-settings') wx.navigateTo({ url: '/pages/settings/settings' });
   },
 

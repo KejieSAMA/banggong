@@ -34,14 +34,18 @@ Page({
   },
 
   onLoad() {
+    this.load();
+    this._onFav = () => this.render();
+    this._onTheme = () => this.setData({ theme: theme.current() });
+    this._onCatalog = () => this.load();
+    store.on('fav', this._onFav);
+    store.on('theme', this._onTheme);
+    store.on('catalog', this._onCatalog);
+  },
+  load() {
     this._products = [];
     api.getCategories().then(cats => this.setData({ cats }));
     api.getProducts().then(products => { this._products = products; this.render(); });
-
-    this._onFav = () => this.render();
-    this._onTheme = () => this.setData({ theme: theme.current() });
-    store.on('fav', this._onFav);
-    store.on('theme', this._onTheme);
   },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().init(1);
@@ -51,6 +55,7 @@ Page({
   onUnload() {
     store.off('fav', this._onFav);
     store.off('theme', this._onTheme);
+    store.off('catalog', this._onCatalog);
   },
 
   render() {

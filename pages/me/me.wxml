@@ -46,6 +46,14 @@
         <text class="cell-tit">意见反馈</text>
         <icon name="chevron_right" size="40" class="chev" />
       </view>
+      <block wx:if="{{admin}}">
+        <view class="cell-div" />
+        <view class="cell" hover-class="hv-cell" hover-stay-time="80" data-act="open-admin" bindtap="handleAct">
+          <view class="cell-ic"><icon name="inventory_2" size="40" /></view>
+          <text class="cell-tit">商品管理</text>
+          <icon name="chevron_right" size="40" class="chev" />
+        </view>
+      </block>
       <view class="cell-div" />
       <view class="cell" hover-class="hv-cell" hover-stay-time="80" data-act="open-settings" bindtap="handleAct">
         <view class="cell-ic"><icon name="settings" size="40" /></view>

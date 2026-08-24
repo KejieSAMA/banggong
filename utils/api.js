@@ -125,4 +125,31 @@ module.exports = {
   getSearchHistory: () => remote('/search-history'),
   pushSearch: q => remote('/search-history', { method: 'POST', data: { q } }),
   clearSearch: () => remote('/search-history', { method: 'DELETE' }),
+
+  /* —— 管理端（仅管理员；code:1 提示无权限/未配置） —— */
+  getAdminProducts: () => remote('/admin/products'),
+  createProduct: p => remote('/admin/products', { method: 'POST', data: p }),
+  updateProduct: (id, p) => remote('/admin/products/' + id, { method: 'PUT', data: p }),
+  deleteProduct: id => remote('/admin/products/' + id, { method: 'DELETE' }),
+
+  /* OSS 直传：先取服务端签名凭证，再 wx.uploadFile 表单上传；成功返回完整 URL */
+  uploadImage(filePath) {
+    const ext = ((filePath.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg');
+    return remote('/admin/upload-token?ext=' + ext).then(t => new Promise((resolve, reject) => {
+      wx.uploadFile({
+        url: t.host,
+        filePath,
+        name: 'file',
+        formData: { key: t.key, policy: t.policy, OSSAccessKeyId: t.OSSAccessKeyId, signature: t.signature },
+        success(res) {
+          if (res.statusCode === 200 || res.statusCode === 204) resolve(t.host + '/' + t.key);
+          else reject(new Error('OSS 上传失败 ' + res.statusCode));
+        },
+        fail: err => reject(new Error(err.errMsg || 'OSS 上传失败')),
+      });
+    }));
+  },
+
+  /* 目录缓存失效（管理端变更后调用，随后 store.set('catalog', ...) 通知各页重拉） */
+  clearCatalogCache() { productsCache = null; },
 };

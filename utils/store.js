@@ -31,6 +31,8 @@ const state = Object.assign({
   theme: 'light',
   sort: 'default',
   freeShipOnly: false,
+  admin: false, // 管理员标记（随 cloudPull 的 profile 刷新，不持久化）
+  openid: '',   // 本人 openid（settings「我的ID」展示用，不持久化）
 }, load());
 
 function persist() {
@@ -60,6 +62,8 @@ function cloudPull() {
     api.getProfile(), api.getFavorites(), api.getHistory(), api.getSearchHistory(),
   ]).then(res => {
     const [profile, cloudFav, cloudHis, cloudKwd] = res;
+    state.admin = !!(profile && profile.admin);
+    state.openid = (profile && profile.openid) || '';
     state.favorites = [...new Set(state.favorites.concat(cloudFav || []))].slice(0, 200);
     state.history = [...new Set(state.history.concat(cloudHis || []))].slice(0, 20);
     state.searchHistory = [...new Set(state.searchHistory.concat(cloudKwd || []))].slice(0, 8);
@@ -149,16 +153,17 @@ module.exports = {
     persist(); emit('login');
     push(() => api.saveProfile({ nickname: name, avatar }), 'profile');
   },
-  /* 一键微信登录：云端优先——服务端按 openid 确定性生成昵称（用户XXXXXX，恒定不变）
-     并保留历史资料（含用户改过的昵称头像）；登录后立即 cloudPull 拉回云端数据
-     （登出期间的本地足迹合并上推），无需重启小程序；云端不可用时本地随机兜底 */
+  /* 一键微信登录：云端优先——服务端按 openid 确定性生成昵称（未自定义时每次重算，
+   恒定不变且能自愈污染数据）；登录后立即 cloudPull 拉回云端数据（登出期间的本地足迹
+   合并上推），无需重启小程序。云端不可用时纯本地登录（随机昵称不上传，防污染云端档案） */
   login() {
     api.login().then(profile => {
       this.setProfile(profile.nickname || '微信用户', profile.avatar || '');
       return this.cloudPull();
     }).catch(() => {
       const suffix = (Math.random().toString(36).slice(2, 8) + '000000').slice(0, 6);
-      this.setProfile('用户' + suffix, '');
+      state.login = { name: '用户' + suffix, avatar: '' };
+      persist(); emit('login');
     });
   },
   /* 退出登录：本机清空身份数据（收藏/足迹/搜索历史，防共用设备泄露），
@@ -166,6 +171,8 @@ module.exports = {
   logout() {
     push(() => api.saveProfile({ loggedOut: true }), 'profile-logout');
     state.login = null;
+    state.admin = false;
+    state.openid = '';
     state.favorites = [];
     state.history = [];
     state.searchHistory = [];

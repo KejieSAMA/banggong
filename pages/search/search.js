@@ -47,8 +47,17 @@ Page({
     this.renderIdle();
     this._onSearch = () => this.renderIdle();
     this._onTheme = () => this.setData({ theme: theme.current() });
+    this._onCatalog = () => {
+      /* 管理端目录变更：刷新搜索源数据 */
+      api.getCategories().then(cats => {
+        this._cats = {};
+        cats.forEach(c => { this._cats[c.id] = c.name; });
+      });
+      api.getProducts().then(list => { this._products = list; });
+    };
     store.on('search', this._onSearch);
     store.on('theme', this._onTheme);
+    store.on('catalog', this._onCatalog);
   },
   onShow() {
     theme.syncNav();
@@ -57,6 +66,7 @@ Page({
   onUnload() {
     store.off('search', this._onSearch);
     store.off('theme', this._onTheme);
+    store.off('catalog', this._onCatalog);
   },
 
   renderIdle() {

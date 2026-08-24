@@ -1,0 +1,83 @@
+/* 商品编辑表单 */
+.fm-group {
+  margin: 20rpx 24rpx 0; padding: 8rpx 28rpx;
+  background: var(--surface-container-low);
+  border-radius: var(--shape-lg);
+}
+.fm-label {
+  font-size: 25rpx; color: var(--on-surface-variant);
+  padding: 20rpx 0 8rpx; display: block;
+}
+.fm-row {
+  display: flex; align-items: center; gap: 24rpx;
+  padding: 22rpx 0;
+  border-bottom: 2rpx solid var(--outline-variant);
+}
+.fm-group .fm-row:last-child { border-bottom: none; }
+.fm-row .fm-label { padding: 0; width: 150rpx; flex-shrink: 0; }
+.fm-input { flex: 1; font-size: 28rpx; color: var(--on-surface); }
+.fm-picker { font-size: 28rpx; color: var(--on-surface); }
+.s-ph { color: var(--on-surface-variant); opacity: .8; }
+
+/* 选图 */
+.fm-img {
+  position: relative; width: 240rpx; height: 240rpx;
+  border-radius: var(--shape-md); overflow: hidden;
+  background: var(--surface-container-high);
+  margin: 8rpx 0 24rpx;
+}
+.fm-img-in { width: 100%; height: 100%; }
+.fm-img-holder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12rpx;
+  color: var(--on-surface-variant); font-size: 22rpx;
+}
+.fm-img-mask {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.55); color: #fff;
+  font-size: 20rpx; text-align: center; padding: 6rpx 0;
+}
+
+/* 简介 */
+.fm-textarea {
+  width: 100%; min-height: 160rpx; font-size: 27rpx; color: var(--on-surface);
+  padding-bottom: 24rpx; box-sizing: border-box;
+}
+
+/* 规格编辑器 */
+.fm-specs-hd {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.fm-spec-add {
+  font-size: 24rpx; font-weight: 600; color: var(--primary);
+  padding: 16rpx 0 8rpx;
+}
+.fm-spec-row {
+  display: flex; align-items: center; gap: 14rpx;
+  padding: 12rpx 0;
+}
+.fm-spec-k {
+  width: 200rpx; flex-shrink: 0;
+  padding: 12rpx 18rpx; border-radius: var(--shape-sm);
+  background: var(--surface-container); font-size: 25rpx; color: var(--on-surface);
+}
+.fm-spec-v {
+  flex: 1;
+  padding: 12rpx 18rpx; border-radius: var(--shape-sm);
+  background: var(--surface-container); font-size: 25rpx; color: var(--on-surface);
+}
+.fm-spec-del {
+  flex-shrink: 0; width: 56rpx; height: 56rpx;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; color: var(--on-surface-variant);
+  background: var(--surface-container);
+}
+
+.fm-foot { padding: 36rpx 24rpx 60rpx; }
+.btn.disabled { opacity: .6; pointer-events: none; }
+
+/* 压缩离屏画布 */
+.edit-canvas {
+  position: fixed; left: -9999px; top: -9999px;
+  width: 800px; height: 800px;
+}

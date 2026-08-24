@@ -8,7 +8,9 @@
     "pages/search/search",
     "pages/favorites/favorites",
     "pages/history/history",
-    "pages/settings/settings"
+    "pages/settings/settings",
+    "pages/admin/products/products",
+    "pages/admin/product-edit/product-edit"
   ],
   "window": {
     "navigationStyle": "default",

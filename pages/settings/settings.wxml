@@ -8,6 +8,14 @@
         <text class="cell-tit">账号与安全</text>
         <icon name="chevron_right" size="40" class="chev" />
       </view>
+      <block wx:if="{{openid}}">
+        <view class="cell-div" />
+        <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="copy-id" bindtap="handleAct">
+          <view class="cell-ic"><icon name="privacy_tip" size="40" /></view>
+          <text class="cell-tit">我的ID</text>
+          <view class="cell-val id-val">{{openid}}<icon name="content_copy" size="36" /></view>
+        </view>
+      </block>
       <view class="cell-div" />
       <view class="cell set-cell">
         <view class="cell-ic"><icon name="notifications" size="40" /></view>

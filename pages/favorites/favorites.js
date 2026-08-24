@@ -8,11 +8,16 @@ Page({
   data: { theme: 'light', list: [], countText: '' },
 
   onLoad() {
-    api.getProducts().then(all => { this._all = all; this.render(); });
+    this.load();
     this._onFav = () => this.render();
     this._onTheme = () => this.setData({ theme: theme.current() });
+    this._onCatalog = () => this.load();
     store.on('fav', this._onFav);
     store.on('theme', this._onTheme);
+    store.on('catalog', this._onCatalog);
+  },
+  load() {
+    api.getProducts().then(all => { this._all = all; this.render(); });
   },
   onShow() {
     theme.syncNav();
@@ -21,6 +26,7 @@ Page({
   onUnload() {
     store.off('fav', this._onFav);
     store.off('theme', this._onTheme);
+    store.off('catalog', this._onCatalog);
   },
 
   render() {
