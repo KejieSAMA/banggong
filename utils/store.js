@@ -167,9 +167,16 @@ module.exports = {
     });
   },
   /* 退出登录：本机清空身份数据（收藏/足迹/搜索历史，防共用设备泄露），
-     云端仅置 loggedOut 标记、账户数据保留——重新登录自动拉回；设备偏好（主题/排序/筛选）不清 */
+     云端置 loggedOut 标记、账户数据保留——重新登录自动拉回；设备偏好（主题/排序/筛选）不清。
+     标记推送失败自动重试一次：否则下次启动 cloudPull 会按云端档案自动恢复登录态 */
   logout() {
-    push(() => api.saveProfile({ loggedOut: true }), 'profile-logout');
+    if (cloud) {
+      const mark = retried => api.saveProfile({ loggedOut: true }).catch(e => {
+        if (!retried) setTimeout(() => mark(true), 2000);
+        else console.warn('[store] 退出标记同步失败，下次启动可能恢复登录态:', e.message);
+      });
+      mark(false);
+    }
     state.login = null;
     state.admin = false;
     state.openid = '';

@@ -90,6 +90,7 @@ miniprogram/
   - 头像昵称在登录后经「编辑资料」可选完善（`open-type="chooseAvatar"` + `type="nickname"`，微信合规组件）
   - 未登录：「我的」页显示「点击登录」；收藏操作经 `ui.loginGuard()` 弹原生引导 →「去登录」跳「我的」页自动打开登录 sheet；浏览/搜索对所有人开放（足迹本地记录，不推云）
   - 退出登录：本机清空收藏/足迹/搜索历史（防共用设备泄露；设备偏好主题/排序/筛选保留），云端仅置 `loggedOut` 标记、账户数据保留——重新登录自动拉回；数据类云推送均要求登录态；cloudPull 见 `loggedOut` 不恢复登录态
+  - 清除本地缓存 ≠ 退出登录：登录态存于服务端（openid 档案），清缓存/换设备后启动自动恢复；退出请走 设置 → 退出登录（标记推送失败自动重试一次）
   - 足迹支持单条删除（编辑模式）与一键清空，均多端同步（`DELETE /api/history/:id`）
   - 头像统一经页面离屏 canvas 压缩为 128px JPEG data URL（约 <30KB）再上传，避免原图 base64 超限与同步大 payload
 - 后端安全：用户接口仅信任携带 `x-wx-source` 网关头的请求（公网直访可伪造 `x-wx-openid`，缺 `x-wx-source` 一律 code:1）；收藏多端并发为 last-write-wins（展示型应用可接受）
