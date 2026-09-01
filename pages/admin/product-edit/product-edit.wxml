@@ -1,11 +1,17 @@
 <view class="page {{theme}}">
   <view class="page-body">
     <view class="fm-group">
-      <view class="fm-label">商品图片</view>
-      <view class="fm-img" hover-class="hv-sink" hover-stay-time="80" bindtap="onPickImage">
-        <image wx:if="{{img}}" class="fm-img-in" src="{{img}}" mode="aspectFill" />
-        <view wx:else class="fm-img-holder"><icon name="inventory_2" size="68" /><text>{{uploading ? '上传中…' : '点击选图'}}</text></view>
-        <view wx:if="{{uploading}}" class="fm-img-mask">压缩上传中…</view>
+      <view class="fm-label">商品图集（首张为主图，最多 9 张）</view>
+      <view class="fm-imgs">
+        <view wx:for="{{images}}" wx:key="index" class="fm-img-cell">
+          <image class="fm-img-in" src="{{item}}" mode="aspectFill" data-i="{{index}}" bindtap="onPreviewImage" />
+          <view wx:if="{{index === 0}}" class="fm-img-main">主图</view>
+          <view class="fm-img-del" data-i="{{index}}" catchtap="onRemoveImage"><icon name="close" size="24" /></view>
+        </view>
+        <view wx:if="{{images.length < 9}}" class="fm-img-cell fm-img-add" hover-class="hv-sink" hover-stay-time="80" bindtap="onPickImage">
+          <icon name="inventory_2" size="56" />
+          <text>{{uploading ? '上传中…' : '添加'}}</text>
+        </view>
       </view>
     </view>
 

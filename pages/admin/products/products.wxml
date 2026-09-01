@@ -6,6 +6,9 @@
         <input class="ad-search-input" placeholder="搜索商品名称 / ID" placeholder-class="s-ph"
           value="{{kw}}" bindinput="onKw" confirm-type="search" />
       </view>
+      <view class="ad-add ghost" hover-class="hv-sink" hover-stay-time="80" bindtap="onOpenCategories">
+        <icon name="folder" size="36" />分类
+      </view>
       <view class="ad-add" hover-class="hv-sink" hover-stay-time="80" bindtap="onCreate">
         <icon name="edit" size="36" />新增
       </view>

@@ -50,9 +50,8 @@ Page({
   },
 
   build(p, all) {
-    /* 图集：主图 + 同大类相关图（与 demo galImgs 一致） */
-    const others = all.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 2).map(x => x.img);
-    const imgs = [p.img].concat(others).slice(0, 3);
+    /* 图集：商品真实图集（images，首张即主图），不再借用其他商品图凑数 */
+    const imgs = Array.isArray(p.images) && p.images.length ? p.images : [p.img];
     const related = all.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4)
       .map((x, i) => Object.assign({}, x, { fav: store.isFav(x.id), delay: Math.min(i * 30, 300) }));
     this.setData({

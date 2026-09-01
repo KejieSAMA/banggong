@@ -10,7 +10,8 @@
     "pages/history/history",
     "pages/settings/settings",
     "pages/admin/products/products",
-    "pages/admin/product-edit/product-edit"
+    "pages/admin/product-edit/product-edit",
+    "pages/admin/categories/categories"
   ],
   "window": {
     "navigationStyle": "default",

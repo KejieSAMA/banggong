@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "分类管理",
+  "usingComponents": {
+    "icon": "../../../components/icon/icon",
+    "sheet": "../../../components/sheet/sheet",
+    "dialog": "../../../components/dialog/dialog",
+    "toast": "../../../components/toast/toast"
+  }
+}

@@ -1,0 +1,77 @@
+/* 分类管理 */
+.cat-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24rpx 24rpx 8rpx;
+}
+.cat-tip { font-size: 22rpx; color: var(--on-surface-variant); }
+.cat-add {
+  display: flex; align-items: center; gap: 8rpx;
+  padding: 16rpx 28rpx; border-radius: 999rpx;
+  background: var(--primary); color: var(--on-primary);
+  font-size: 26rpx; font-weight: 600;
+}
+
+.cat-row {
+  display: flex; align-items: center; gap: 20rpx;
+  margin: 16rpx 24rpx 0; padding: 24rpx;
+  background: var(--surface-container-low);
+  border-radius: var(--shape-lg);
+}
+.cat-ic {
+  width: 84rpx; height: 84rpx; border-radius: var(--shape-md);
+  background: var(--surface-container-high);
+  color: var(--primary);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.cat-info { flex: 1; min-width: 0; }
+.cat-name { font-size: 28rpx; font-weight: 700; color: var(--on-surface); }
+.cat-sub {
+  font-size: 22rpx; color: var(--on-surface-variant); margin-top: 6rpx;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cat-count { font-size: 22rpx; color: var(--on-surface-variant); flex-shrink: 0; }
+.cat-acts { display: flex; gap: 12rpx; flex-shrink: 0; }
+.cat-mini {
+  padding: 8rpx 20rpx; border-radius: 999rpx;
+  background: var(--surface-container-high); color: var(--on-surface-variant);
+  font-size: 22rpx; font-weight: 600;
+}
+.cat-mini.danger { color: var(--error, #B3261E); }
+
+/* 编辑 sheet */
+.cedit-form { padding: 16rpx 44rpx 8rpx; }
+.cedit-row {
+  display: flex; align-items: center; gap: 24rpx;
+  padding: 8rpx 0 22rpx;
+}
+.cedit-row .lab, .cedit-hd .lab { font-size: 25rpx; color: var(--on-surface-variant); }
+.cedit-row .lab { width: 100rpx; flex-shrink: 0; }
+.cedit-input {
+  flex: 1; height: 72rpx; line-height: 72rpx; padding: 0 24rpx;
+  border-radius: var(--shape-md); background: var(--surface-container);
+  font-size: 27rpx; color: var(--on-surface);
+}
+.cedit-picker {
+  display: flex; align-items: center; gap: 12rpx;
+  height: 72rpx; line-height: 72rpx; padding: 0 24rpx;
+  border-radius: var(--shape-md); background: var(--surface-container);
+  font-size: 27rpx; color: var(--on-surface);
+  color: var(--on-surface);
+}
+.cedit-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 12rpx;
+}
+.cedit-add { font-size: 24rpx; font-weight: 600; color: var(--primary); }
+.cedit-sub-row {
+  display: flex; align-items: center; gap: 14rpx; padding: 8rpx 0;
+}
+.cedit-sub-del {
+  flex-shrink: 0; width: 56rpx; height: 56rpx;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; color: var(--on-surface-variant);
+  background: var(--surface-container);
+}
+.cedit-form .sheet-btns { width: 100%; margin-top: 24rpx; }
+.s-ph { color: var(--on-surface-variant); opacity: .8; }
+.btn.disabled { opacity: .6; pointer-events: none; }

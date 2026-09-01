@@ -131,6 +131,10 @@ module.exports = {
   createProduct: p => remote('/admin/products', { method: 'POST', data: p }),
   updateProduct: (id, p) => remote('/admin/products/' + id, { method: 'PUT', data: p }),
   deleteProduct: id => remote('/admin/products/' + id, { method: 'DELETE' }),
+  getAdminCategories: () => remote('/admin/categories'),
+  createCategory: c => remote('/admin/categories', { method: 'POST', data: c }),
+  updateCategory: (id, c) => remote('/admin/categories/' + id, { method: 'PUT', data: c }),
+  deleteCategory: id => remote('/admin/categories/' + id, { method: 'DELETE' }),
 
   /* OSS 直传：先取服务端签名凭证，再 wx.uploadFile 表单上传；成功返回完整 URL */
   uploadImage(filePath) {

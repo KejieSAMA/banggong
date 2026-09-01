@@ -84,6 +84,9 @@ Page({
   onCreate() {
     wx.navigateTo({ url: '/pages/admin/product-edit/product-edit' });
   },
+  onOpenCategories() {
+    wx.navigateTo({ url: '/pages/admin/categories/categories' });
+  },
 
   /* 删除（二次确认） */
   onOpenDelete(e) {

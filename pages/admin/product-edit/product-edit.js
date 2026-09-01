@@ -16,7 +16,7 @@ Page({
   data: {
     theme: 'light',
     isEdit: false,
-    img: '',           // 展示用完整 URL
+    images: [],        // 展示用完整 URL（首张为主图）
     uploading: false,
     name: '', brand: '',
     catNames: [], catIdx: 0,
@@ -30,7 +30,7 @@ Page({
 
   onLoad(options) {
     this._id = (options && options.id) || '';
-    this._rawImg = ''; // 原始 img（相对路径或 URL），未换图时原样回传
+    this._rawImages = []; // 原始图集（相对路径或 URL），首张为主图
     this._cats = [];
     this._online = true;
     this.setData({ isEdit: !!this._id });
@@ -52,7 +52,7 @@ Page({
       api.getAdminProducts().then(rows => {
         const p = (rows || []).find(x => x.id === this._id);
         if (!p) { ui.toast(this, '商品不存在'); setTimeout(() => wx.navigateBack(), 800); return; }
-        this._rawImg = p.img;
+        this._rawImages = Array.isArray(p.images) && p.images.length ? p.images.slice() : [p.img];
         this._online = p.online !== false;
         const catIdx = Math.max(0, this._cats.findIndex(c => c.id === p.cat));
         const subNames = (this._cats[catIdx] && this._cats[catIdx].subs) ? this._cats[catIdx].subs.slice() : [];
@@ -60,7 +60,7 @@ Page({
         const tagIdx = TAG_OPTIONS.findIndex(t => t.key === (p.tag || ''));
         this.setData({
           catNames, catIdx, subNames, subIdx,
-          img: displayImg(p.img),
+          images: this._rawImages.map(displayImg),
           name: p.name || '', brand: p.brand || '',
           price: p.price != null ? String(Number(p.price)) : '',
           orig: p.orig != null ? String(Number(p.orig)) : '',
@@ -103,28 +103,44 @@ Page({
     this.setData({ specs: specs.length ? specs : [{ k: '', v: '' }] });
   },
 
-  /* —— 选图：相册 → 离屏 canvas 压缩 → OSS 直传 —— */
+  /* —— 图集管理：相册选图 → 离屏 canvas 压缩 → OSS 直传（≤9 张，首张为主图） —— */
   onPickImage() {
     if (this.data.uploading) return;
+    const room = 9 - this._rawImages.length;
+    if (room <= 0) { ui.toast(this, '最多 9 张图片'); return; }
     wx.chooseMedia({
-      count: 1,
+      count: room,
       mediaType: ['image'],
       sizeType: ['compressed'],
       success: res => {
-        const f = res.tempFiles && res.tempFiles[0];
-        if (f) this.compressAndUpload(f.tempFilePath);
+        const files = (res.tempFiles || []).map(f => f.tempFilePath).slice(0, room);
+        if (!files.length) return;
+        this.setData({ uploading: true });
+        const uploadNext = i => {
+          if (i >= files.length) {
+            this.setData({ uploading: false, images: this._rawImages.map(displayImg) });
+            return;
+          }
+          this.compress(files[i])
+            .then(tmp => api.uploadImage(tmp))
+            .then(url => { this._rawImages.push(url); uploadNext(i + 1); })
+            .catch(e => {
+              this.setData({ uploading: false, images: this._rawImages.map(displayImg) });
+              ui.toast(this, e.message || '图片上传失败');
+            });
+        };
+        uploadNext(0);
       },
     });
   },
-  compressAndUpload(filePath) {
-    this.setData({ uploading: true });
-    this.compress(filePath).then(tmp => api.uploadImage(tmp)).then(url => {
-      this._rawImg = url;
-      this.setData({ img: url, uploading: false });
-    }).catch(e => {
-      this.setData({ uploading: false });
-      ui.toast(this, e.message || '图片上传失败');
-    });
+  onRemoveImage(e) {
+    if (this._rawImages.length <= 1) { ui.toast(this, '至少保留一张图片'); return; }
+    const i = e.currentTarget.dataset.i;
+    this._rawImages.splice(i, 1);
+    this.setData({ images: this._rawImages.map(displayImg) });
+  },
+  onPreviewImage(e) {
+    wx.previewImage({ current: this.data.images[e.currentTarget.dataset.i], urls: this.data.images });
   },
   /* 压缩为最长边 800px 的 JPEG（商品图清晰度与流量折中） */
   compress(url) {
@@ -161,7 +177,7 @@ Page({
     const d = this.data;
     const name = (d.name || '').trim();
     if (!name) { ui.toast(this, '请输入商品名称'); return; }
-    if (!this._rawImg) { ui.toast(this, '请上传商品图片'); return; }
+    if (!this._rawImages.length) { ui.toast(this, '请上传商品图片'); return; }
     if (!d.price || !(Number(d.price) >= 0)) { ui.toast(this, '请输入正确的价格'); return; }
     const cat = this._cats[d.catIdx];
     if (!cat) { ui.toast(this, '请选择分类'); return; }
@@ -174,7 +190,8 @@ Page({
       sub,
       price: Number(d.price),
       orig: d.orig !== '' && Number(d.orig) >= 0 ? Number(d.orig) : '',
-      img: this._rawImg,
+      img: this._rawImages[0],
+      images: this._rawImages.slice(),
       tag: TAG_OPTIONS[d.tagIdx] ? TAG_OPTIONS[d.tagIdx].key : '',
       rating: Number(d.rating) || 5,
       sold: parseInt(d.sold, 10) || 0,
