@@ -62,24 +62,18 @@ Page({
   onBannerPick(e) {
     if (this.data.uploading) return;
     const i = e.currentTarget.dataset.i;
-    wx.chooseMedia({
-      count: 1,
-      mediaType: ['image'],
-      sizeType: ['compressed'],
-      success: res => {
-        const f = res.tempFiles && res.tempFiles[0];
-        if (!f) return;
-        this.setData({ uploading: true });
-        this.compress(f.tempFilePath)
-          .then(tmp => api.uploadImage(tmp))
-          .then(url => {
-            this.setData({ uploading: false, ['banners[' + i + '].img']: url, ['banners[' + i + '].imgDisplay']: url });
-          })
-          .catch(err => {
-            this.setData({ uploading: false });
-            ui.toast(this, err.message || '图片上传失败');
-          });
-      },
+    ui.pickImages(1, files => {
+      if (!files.length) return;
+      this.setData({ uploading: true });
+      this.compress(files[0])
+        .then(tmp => api.uploadImage(tmp))
+        .then(url => {
+          this.setData({ uploading: false, ['banners[' + i + '].img']: url, ['banners[' + i + '].imgDisplay']: url });
+        })
+        .catch(err => {
+          this.setData({ uploading: false });
+          ui.toast(this, err.message || '图片上传失败');
+        });
     });
   },
   /* 压缩为最长边 1200px 的 JPEG（Banner 宽幅） */

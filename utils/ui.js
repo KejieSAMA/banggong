@@ -45,4 +45,33 @@ function toggleTabBar(page, hidden) {
   }
 }
 
-module.exports = { toast, loginGuard, takeLoginIntent, toggleTabBar };
+/* 相册选图（最多 count 张，回调给 tempFilePath 数组）：
+   优先 wx.chooseMedia，旧基础库降级 wx.chooseImage；
+   统一 fail 处理（toast + console.warn），避免"点了没反应"的静默失败 */
+function pickImages(count, cb) {
+  const onFail = err => {
+    const msg = (err && err.errMsg) || '选择图片失败';
+    console.warn('[ui.pickImages]', msg);
+    if (/auth/.test(msg)) wx.showToast({ title: '请在设置中允许访问相册', icon: 'none' });
+    else wx.showToast({ title: msg, icon: 'none' });
+  };
+  if (wx.chooseMedia) {
+    wx.chooseMedia({
+      count,
+      mediaType: ['image'],
+      sizeType: ['compressed'],
+      success: res => cb((res.tempFiles || []).map(f => f.tempFilePath)),
+      fail: onFail,
+    });
+  } else {
+    wx.chooseImage({
+      count,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: res => cb(res.tempFilePaths || []),
+      fail: onFail,
+    });
+  }
+}
+
+module.exports = { toast, loginGuard, takeLoginIntent, toggleTabBar, pickImages };

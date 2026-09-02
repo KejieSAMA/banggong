@@ -108,29 +108,24 @@ Page({
     if (this.data.uploading) return;
     const room = 9 - this._rawImages.length;
     if (room <= 0) { ui.toast(this, '最多 9 张图片'); return; }
-    wx.chooseMedia({
-      count: room,
-      mediaType: ['image'],
-      sizeType: ['compressed'],
-      success: res => {
-        const files = (res.tempFiles || []).map(f => f.tempFilePath).slice(0, room);
-        if (!files.length) return;
-        this.setData({ uploading: true });
-        const uploadNext = i => {
-          if (i >= files.length) {
+    ui.pickImages(room, files => {
+      files = files.slice(0, room);
+      if (!files.length) return;
+      this.setData({ uploading: true });
+      const uploadNext = i => {
+        if (i >= files.length) {
+          this.setData({ uploading: false, images: this._rawImages.map(displayImg) });
+          return;
+        }
+        this.compress(files[i])
+          .then(tmp => api.uploadImage(tmp))
+          .then(url => { this._rawImages.push(url); uploadNext(i + 1); })
+          .catch(e => {
             this.setData({ uploading: false, images: this._rawImages.map(displayImg) });
-            return;
-          }
-          this.compress(files[i])
-            .then(tmp => api.uploadImage(tmp))
-            .then(url => { this._rawImages.push(url); uploadNext(i + 1); })
-            .catch(e => {
-              this.setData({ uploading: false, images: this._rawImages.map(displayImg) });
-              ui.toast(this, e.message || '图片上传失败');
-            });
-        };
-        uploadNext(0);
-      },
+            ui.toast(this, e.message || '图片上传失败');
+          });
+      };
+      uploadNext(0);
     });
   },
   onRemoveImage(e) {
