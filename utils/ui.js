@@ -52,8 +52,18 @@ function pickImages(count, cb) {
   const onFail = err => {
     const msg = (err && err.errMsg) || '选择图片失败';
     console.warn('[ui.pickImages]', msg);
-    if (/auth/.test(msg)) wx.showToast({ title: '请在设置中允许访问相册', icon: 'none' });
-    else wx.showToast({ title: msg, icon: 'none' });
+    if (/privacy agreement/i.test(msg)) {
+      /* 微信隐私接口管控：后台《用户隐私保护指引》未声明「选中的照片或视频信息」时接口直接拒绝 */
+      wx.showModal({
+        title: '隐私接口未声明',
+        content: '选图接口受《用户隐私保护指引》管控。请到小程序后台「设置 → 服务内容声明 → 用户隐私保护指引」声明「选中的照片或视频信息」，提交生效后重试。',
+        showCancel: false,
+      });
+    } else if (/auth/.test(msg)) {
+      wx.showToast({ title: '请在设置中允许访问相册', icon: 'none' });
+    } else {
+      wx.showToast({ title: msg, icon: 'none' });
+    }
   };
   if (wx.chooseMedia) {
     wx.chooseMedia({
