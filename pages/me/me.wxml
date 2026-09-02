@@ -75,7 +75,7 @@
       <view class="privacy-row" catchtap="onPrivacyToggle">
         <view class="privacy-check {{agree ? 'on' : ''}}" />
         <view class="privacy-txt">
-          已阅读并同意<text class="privacy-link" catchtap="onPrivacyDoc">《用户协议》</text>与<text class="privacy-link" catchtap="onPrivacyDoc">《隐私政策》</text>
+          已阅读并同意<text class="privacy-link" data-t="user" catchtap="onPrivacyDoc">《用户协议》</text>与<text class="privacy-link" data-t="privacy" catchtap="onPrivacyDoc">《隐私政策》</text>
         </view>
       </view>
     </view>

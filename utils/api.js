@@ -135,6 +135,10 @@ module.exports = {
   createCategory: c => remote('/admin/categories', { method: 'POST', data: c }),
   updateCategory: (id, c) => remote('/admin/categories/' + id, { method: 'PUT', data: c }),
   deleteCategory: id => remote('/admin/categories/' + id, { method: 'DELETE' }),
+  getAdminBanners: () => remote('/admin/banners'),
+  saveBanners: banners => remote('/admin/banners', { method: 'PUT', data: { banners } }),
+  getAdminHotKeywords: () => remote('/admin/hot-keywords'),
+  saveHotKeywords: words => remote('/admin/hot-keywords', { method: 'PUT', data: { words } }),
 
   /* OSS 直传：先取服务端签名凭证，再 wx.uploadFile 表单上传；成功返回完整 URL */
   uploadImage(filePath) {

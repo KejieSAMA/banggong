@@ -99,8 +99,9 @@ miniprogram/
 
 - 管理员识别：后端环境变量 `ADMIN_OPENIDS`（openid 白名单）；`GET /api/user/profile` 返回 `admin` 标记，cloudPull 存入 `store`（不持久化），「我的」页仅管理员显示「商品管理」cell
 - openid 获取：设置页「我的ID」行点按复制（登录后显示）
-- 管理页：`pages/admin/products`（列表/搜索/上下架/删除 + 分类管理入口）+ `pages/admin/product-edit`（新建/编辑表单）+ `pages/admin/categories`（分类增删改/二级分类；分类下有商品时删除被后端拒绝）
-- 商品图集：编辑页宫格管理器（≤9 张，首张为主图徽标，逐张压缩后 OSS 直传）；保存提交 `images` 数组，服务端自动同步 `img = images[0]`；详情页轮播使用真实图集 `p.images`（不借用其他商品图）
+- 管理页：`pages/admin/products`（列表/搜索/上下架/删除 + 分类/内容管理入口）+ `pages/admin/product-edit`（新建/编辑表单）+ `pages/admin/categories`（分类增删改/二级分类；分类下有商品时删除被后端拒绝）+ `pages/admin/content`（首页轮播 Banner / 热搜词，全量替换保存）
+- 商品图集：编辑页宫格管理器（≤9 张固定正方形格子，首张为主图徽标，逐张压缩后 OSS 直传）；保存提交 `images` 数组，服务端自动同步 `img = images[0]`；详情页轮播使用真实图集 `p.images`（不借用其他商品图）
+- 合规：用户协议/隐私政策为独立页面 `pages/agreement?type=user|privacy`（登录抽屉与设置页均跳转；【】占位符正式发布前替换为真实主体与联系方式）
 - 商品图片：相册选图 → 页面离屏 canvas 压缩（最长边 800px JPEG）→ `api.uploadImage()`：先取服务端签名凭证（`GET /api/admin/upload-token`）再 `wx.uploadFile` 直传阿里云 OSS，商品 `img` 存完整 URL；`AK/SK` 只在后端环境变量，绝不出现在小程序代码
 - 目录刷新：管理端任何变更后 `api.clearCatalogCache()` + `store.set('catalog', Date.now())` 广播；home/mall/category/search/favorites/history/product 七页订阅 `catalog` 事件重拉
 - 上下架：商品 `online` 字段（默认 true），公开目录接口自动过滤下架商品

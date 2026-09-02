@@ -85,9 +85,12 @@ Page({
     ui.toast(this, '登录成功，欢迎回来', 'check_circle-fill');
   },
 
-  /* 隐私勾选：整行点击切换；协议链接点击看文档（catchtap 阻止冒泡切换） */
+  /* 隐私勾选：整行点击切换；协议链接跳协议页（catchtap 阻止冒泡切换） */
   onPrivacyToggle() { this.setData({ agree: !this.data.agree }); },
-  onPrivacyDoc() { ui.toast(this, '文档仅作界面演示'); },
+  onPrivacyDoc(e) {
+    const t = e.currentTarget.dataset.t === 'privacy' ? 'privacy' : 'user';
+    wx.navigateTo({ url: '/pages/agreement/agreement?type=' + t });
+  },
 
   /* —— 编辑资料（登录后可选完善头像昵称；chooseAvatar + nickname，微信合规组件） —— */
   openProfile() {

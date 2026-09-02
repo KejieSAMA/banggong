@@ -1,0 +1,23 @@
+/* 协议页 */
+.ag-hero {
+  display: flex; flex-direction: column; align-items: center; gap: 8rpx;
+  padding: 36rpx 0 4rpx;
+}
+.ag-logo {
+  width: 120rpx; height: 120rpx; border-radius: 40rpx;
+  background: var(--primary-container); color: var(--on-primary-container);
+  display: flex; align-items: center; justify-content: center;
+}
+.ag-sec { padding: 24rpx 36rpx 0; }
+.ag-h {
+  font-size: 29rpx; font-weight: 700; color: var(--on-surface);
+  padding-bottom: 12rpx;
+}
+.ag-p {
+  font-size: 26rpx; line-height: 1.75; color: var(--on-surface-variant);
+  margin-bottom: 14rpx; text-align: justify;
+}
+.ag-foot {
+  text-align: center; font-size: 22rpx; color: var(--on-surface-variant);
+  opacity: .7; padding-top: 28rpx;
+}

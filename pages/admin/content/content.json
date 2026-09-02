@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "内容管理",
+  "usingComponents": {
+    "icon": "../../../components/icon/icon",
+    "toast": "../../../components/toast/toast"
+  }
+}

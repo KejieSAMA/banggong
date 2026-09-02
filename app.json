@@ -11,7 +11,9 @@
     "pages/settings/settings",
     "pages/admin/products/products",
     "pages/admin/product-edit/product-edit",
-    "pages/admin/categories/categories"
+    "pages/admin/categories/categories",
+    "pages/admin/content/content",
+    "pages/agreement/agreement"
   ],
   "window": {
     "navigationStyle": "default",

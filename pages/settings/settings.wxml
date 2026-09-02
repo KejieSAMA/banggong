@@ -49,12 +49,12 @@
     </view>
 
     <view class="cell-group">
-      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-doc" bindtap="handleAct">
+      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="open-doc" data-t="user" bindtap="handleAct">
         <text class="cell-tit plain-tit">用户协议</text>
         <icon name="chevron_right" size="40" class="chev" />
       </view>
       <view class="cell-div" style="margin-left:44rpx" />
-      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="toast-doc" bindtap="handleAct">
+      <view class="cell set-cell" hover-class="hv-cell" hover-stay-time="80" data-act="open-doc" data-t="privacy" bindtap="handleAct">
         <text class="cell-tit plain-tit">隐私政策</text>
         <icon name="chevron_right" size="40" class="chev" />
       </view>

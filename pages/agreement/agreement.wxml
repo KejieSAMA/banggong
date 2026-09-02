@@ -1,0 +1,13 @@
+<view class="page {{theme}}">
+  <view class="page-body">
+    <view class="ag-hero">
+      <view class="ag-logo"><icon name="privacy_tip" size="60" /></view>
+    </view>
+    <view wx:for="{{sections}}" wx:key="h" class="ag-sec">
+      <view class="ag-h">{{item.h}}</view>
+      <view wx:for="{{item.p}}" wx:for-item="para" wx:key="*this" class="ag-p">{{para}}</view>
+    </view>
+    <view class="ag-foot">最近更新：2026 年 9 月</view>
+    <view style="height:60rpx" />
+  </view>
+</view>

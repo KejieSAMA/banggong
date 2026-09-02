@@ -48,12 +48,13 @@ Page({
     this._onSearch = () => this.renderIdle();
     this._onTheme = () => this.setData({ theme: theme.current() });
     this._onCatalog = () => {
-      /* 管理端目录变更：刷新搜索源数据 */
+      /* 管理端内容变更：刷新搜索源数据与热搜词 */
       api.getCategories().then(cats => {
         this._cats = {};
         cats.forEach(c => { this._cats[c.id] = c.name; });
       });
       api.getProducts().then(list => { this._products = list; });
+      api.getHotKeywords().then(hot => this.setData({ hot, hotChips: hot.slice(0, 4) }));
     };
     store.on('search', this._onSearch);
     store.on('theme', this._onTheme);

@@ -1,0 +1,42 @@
+<view class="page {{theme}}">
+  <view class="page-body">
+    <view class="ct-hd">首页轮播 Banner</view>
+    <view wx:for="{{banners}}" wx:key="index" class="ct-banner">
+      <view class="ct-b-thumb" data-i="{{index}}" bindtap="onBannerPick">
+        <image wx:if="{{item.imgDisplay}}" src="{{item.imgDisplay}}" mode="aspectFill" />
+        <view wx:else class="ct-b-holder">{{uploading ? '上传中…' : '点击上传图片'}}</view>
+      </view>
+      <view class="ct-b-fields">
+        <input class="ct-b-input" value="{{item.t1}}" data-i="{{index}}" data-f="t1" bindinput="onBannerField"
+          placeholder="主标题（如：开学季文具专场）" placeholder-class="s-ph" maxlength="32" />
+        <input class="ct-b-input" value="{{item.t2}}" data-i="{{index}}" data-f="t2" bindinput="onBannerField"
+          placeholder="副标题（如：满减优惠进行中）" placeholder-class="s-ph" maxlength="32" />
+        <view class="ct-b-del" hover-class="hv-cell" hover-stay-time="80" data-i="{{index}}" bindtap="onBannerRemove">删除此条</view>
+      </view>
+    </view>
+    <view class="ct-add-banner" hover-class="hv-cell" hover-stay-time="80" bindtap="onBannerAdd">+ 添加 Banner</view>
+
+    <view class="ct-hd">热门搜索词</view>
+    <view class="ct-words">
+      <view wx:for="{{words}}" wx:key="*this" class="ct-word">
+        <text>{{item}}</text>
+        <view class="ct-word-x" data-i="{{index}}" catchtap="onWordRemove"><icon name="close" size="22" /></view>
+      </view>
+    </view>
+    <view class="ct-word-row">
+      <input class="ct-word-input" value="{{wordInput}}" bindinput="onWordInput" bindconfirm="onWordAdd"
+        placeholder="输入搜索词后回车或点添加" placeholder-class="s-ph" maxlength="16" confirm-type="done" />
+      <view class="ct-word-add" hover-class="hv-sink" hover-stay-time="80" bindtap="onWordAdd">添加</view>
+    </view>
+
+    <view class="ct-foot">
+      <view class="btn btn-filled btn-block {{saving ? 'disabled' : ''}}" hover-class="hv-sink" hover-stay-time="80" bindtap="onSave">
+        {{saving ? '保存中…' : '保存全部'}}
+      </view>
+      <view class="ct-tip">保存后首页轮播与搜索页热搜立即更新</view>
+    </view>
+  </view>
+
+  <canvas type="2d" id="bannerCanvas" class="banner-canvas" />
+  <toast id="toast" />
+</view>

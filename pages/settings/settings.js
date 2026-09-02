@@ -36,7 +36,10 @@ Page({
     else if (act === 'toast-lang') ui.toast(this, '当前原型仅支持简体中文');
     else if (act === 'clear-cache') this.setData({ clearVisible: true });
     else if (act === 'about') this.setData({ aboutVisible: true });
-    else if (act === 'toast-doc') ui.toast(this, '文档仅作界面演示');
+    else if (act === 'open-doc') {
+      const t = e.currentTarget.dataset.t === 'privacy' ? 'privacy' : 'user';
+      wx.navigateTo({ url: '/pages/agreement/agreement?type=' + t });
+    }
     else if (act === 'copy-id') this.onCopyId();
     else if (act === 'logout') this.setData({ logoutVisible: true });
   },

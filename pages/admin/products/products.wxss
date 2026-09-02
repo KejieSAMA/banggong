@@ -21,6 +21,18 @@
 .ad-add.ghost {
   background: var(--surface-container); color: var(--on-surface-variant);
 }
+/* 第二行入口 */
+.ad-sub {
+  display: flex; gap: 16rpx;
+  padding: 12rpx 24rpx 4rpx;
+}
+.ad-ghost {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8rpx;
+  padding: 14rpx 0; border-radius: 999rpx;
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  font-size: 24rpx; font-weight: 600;
+}
 .ad-count { font-size: 22rpx; color: var(--on-surface-variant); padding: 12rpx 32rpx 4rpx; }
 
 .ad-row {

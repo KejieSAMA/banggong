@@ -87,6 +87,9 @@ Page({
   onOpenCategories() {
     wx.navigateTo({ url: '/pages/admin/categories/categories' });
   },
+  onOpenContent() {
+    wx.navigateTo({ url: '/pages/admin/content/content' });
+  },
 
   /* 删除（二次确认） */
   onOpenDelete(e) {
