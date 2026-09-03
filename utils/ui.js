@@ -47,41 +47,58 @@ function toggleTabBar(page, hidden) {
 
 /* 相册选图（最多 count 张，回调给 tempFilePath 数组）：
    优先 wx.chooseMedia，旧基础库降级 wx.chooseImage；
-   统一 fail 处理（toast + console.warn），避免"点了没反应"的静默失败 */
+   隐私接口管控：选图前若《用户隐私保护指引》未同意，先经 requirePrivacyAuthorize
+   拉起官方授权弹窗（同意一次全局记住）；统一 fail 处理避免"点了没反应" */
 function pickImages(count, cb) {
   const onFail = err => {
     const msg = (err && err.errMsg) || '选择图片失败';
     console.warn('[ui.pickImages]', msg);
     if (/privacy agreement/i.test(msg)) {
-      /* 微信隐私接口管控：后台《用户隐私保护指引》未声明「选中的照片或视频信息」时接口直接拒绝 */
+      /* 后台《用户隐私保护指引》未声明「选中的照片或视频信息」 */
       wx.showModal({
         title: '隐私接口未声明',
         content: '选图接口受《用户隐私保护指引》管控。请到小程序后台「设置 → 服务内容声明 → 用户隐私保护指引」声明「选中的照片或视频信息」，提交生效后重试。',
         showCancel: false,
       });
-    } else if (/auth/.test(msg)) {
-      wx.showToast({ title: '请在设置中允许访问相册', icon: 'none' });
+    } else if (/privacy permission|buttonId/i.test(msg)) {
+      /* 指引已配置但用户未同意（曾拒绝会被缓存） */
+      wx.showToast({ title: '需同意《用户隐私保护指引》后才能选图，请重试并在弹窗中点同意', icon: 'none', duration: 2500 });
+    } else if (/auth deny|authorize/i.test(msg)) {
+      wx.showToast({ title: '请在小程序设置中允许访问相册', icon: 'none' });
     } else {
       wx.showToast({ title: msg, icon: 'none' });
     }
   };
-  if (wx.chooseMedia) {
-    wx.chooseMedia({
-      count,
-      mediaType: ['image'],
-      sizeType: ['compressed'],
-      success: res => cb((res.tempFiles || []).map(f => f.tempFilePath)),
-      fail: onFail,
+  const start = () => {
+    if (wx.chooseMedia) {
+      wx.chooseMedia({
+        count,
+        mediaType: ['image'],
+        sizeType: ['compressed'],
+        success: res => cb((res.tempFiles || []).map(f => f.tempFilePath)),
+        fail: onFail,
+      });
+    } else {
+      wx.chooseImage({
+        count,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
+        success: res => cb(res.tempFilePaths || []),
+        fail: onFail,
+      });
+    }
+  };
+  /* 基础库 2.32.3+ 支持隐私授权探测；不支持时直接调（老版本不受隐私管控） */
+  if (wx.getPrivacySetting && wx.requirePrivacyAuthorize) {
+    wx.getPrivacySetting({
+      success: s => {
+        if (s && s.needAuthorization) {
+          wx.requirePrivacyAuthorize({ success: start, fail: onFail });
+        } else start();
+      },
+      fail: start,
     });
-  } else {
-    wx.chooseImage({
-      count,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: res => cb(res.tempFilePaths || []),
-      fail: onFail,
-    });
-  }
+  } else start();
 }
 
 module.exports = { toast, loginGuard, takeLoginIntent, toggleTabBar, pickImages };
